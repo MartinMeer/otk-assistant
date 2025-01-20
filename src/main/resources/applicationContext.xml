@@ -12,40 +12,20 @@
     <!--<context:annotation-config/>
     <context:component-scan base-package="com.baeldung.applicationcontext"/>-->
 
-
-    <!--<bean id="OtkParser"
-          class="org.martinmeer.utils.OtkParser">
-    </bean>-->
-    <!--<bean id="PropertyManager"
-          class="org.martinmeer.utils.PropertyManager">
-    </bean>-->
-    <!--<bean id="Connector"
-          class="org.martinmeer.utils.Connector">
-    </bean>-->
-    <!--<bean id="GostValidator"
-          class="org.martinmeer.otkassistant.params.GostValidator">
-    </bean>-->
-
-    <bean id="InputConverter"
-          class="org.martinmeer.io.InputConverter">
-        <property name="input" value="${input}"/>
+    <bean id="inputConverter"
+          class="org.martinmeer.otkassistant.io.InputConverter" abstract="true">
     </bean>
 
-    <bean id="ParamMap"
-          class="org.martinmeer.params.ParamMap">
-        <constructor-arg type="java.util.Map"/>
+    <bean id="threadIC"
+          class="org.martinmeer.otkassistant.io.TheadInputConverter">
+
     </bean>
 
-    <bean id="NominalSize"
-          class="org.martinmeer.params.NominalSize">
-        <constructor-arg type="java.lang.String"/>
+    <bean id="dataMap"
+          class="org.martinmeer.otkassistant.params.DataMap">
+
     </bean>
 
-    <bean id="Pitch"
-          class="org.martinmeer.params.Pitch">
-        <constructor-arg ref="NominalSize"/>
-        <constructor-arg type="java.lang.String"/>
-    </bean>
 
 
 
