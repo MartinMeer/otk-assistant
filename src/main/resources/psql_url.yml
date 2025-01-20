@@ -1,0 +1,6 @@
+subprotocol:
+  postgresql
+subname:
+  //176.108.248.118:5432
+subsubname:
+  /otk

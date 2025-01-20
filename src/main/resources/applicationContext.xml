@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+    http://www.springframework.org/schema/beans/spring-beans.xsd
+    http://www.springframework.org/schema/context
+    http://www.springframework.org/schema/context/spring-context.xsd">
+
+    <context:property-placeholder location="classpath:properties"/>
+
+    <!--<context:annotation-config/>
+    <context:component-scan base-package="com.baeldung.applicationcontext"/>-->
+
+
+    <!--<bean id="OtkParser"
+          class="org.martinmeer.utils.OtkParser">
+    </bean>-->
+    <!--<bean id="PropertyManager"
+          class="org.martinmeer.utils.PropertyManager">
+    </bean>-->
+    <!--<bean id="Connector"
+          class="org.martinmeer.utils.Connector">
+    </bean>-->
+    <!--<bean id="GostValidator"
+          class="org.martinmeer.otkassistant.params.GostValidator">
+    </bean>-->
+
+    <bean id="InputConverter"
+          class="org.martinmeer.io.InputConverter">
+        <property name="input" value="${input}"/>
+    </bean>
+
+    <bean id="ParamMap"
+          class="org.martinmeer.params.ParamMap">
+        <constructor-arg type="java.util.Map"/>
+    </bean>
+
+    <bean id="NominalSize"
+          class="org.martinmeer.params.NominalSize">
+        <constructor-arg type="java.lang.String"/>
+    </bean>
+
+    <bean id="Pitch"
+          class="org.martinmeer.params.Pitch">
+        <constructor-arg ref="NominalSize"/>
+        <constructor-arg type="java.lang.String"/>
+    </bean>
+
+
+
+</beans>
