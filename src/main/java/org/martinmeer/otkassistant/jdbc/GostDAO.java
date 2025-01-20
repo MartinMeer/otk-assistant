@@ -1,6 +1,8 @@
 package org.martinmeer.otkassistant.jdbc;
 
-import org.martinmeer.utils.Namespace;
+
+
+import org.martinmeer.otkassistant.utils.Namespace;
 
 import java.io.IOException;
 import java.sql.SQLException;

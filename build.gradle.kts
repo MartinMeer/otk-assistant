@@ -51,6 +51,21 @@ dependencies {
     testImplementation("org.testcontainers:junit-jupiter")
     testImplementation("org.testcontainers:postgresql")
     testRuntimeOnly("org.junit.platform:junit-platform-launcher")
+
+    //Spring-core
+    implementation("org.springframework:spring-aop:6.2.1")
+    implementation("org.springframework:spring-core:6.2.1")
+    implementation("org.springframework:spring-context:6.2.1")
+    implementation("org.springframework:spring-beans:6.2.1")
+
+    //Spring-web
+    implementation("org.springframework:spring-web:6.2.1")
+    implementation("org.springframework:spring-webmvc:6.2.1")
+
+    //Jackson
+    implementation("com.fasterxml.jackson.core:jackson-core:2.18.2")
+    implementation("com.fasterxml.jackson.core:jackson-databind:2.18.2")
+
 }
 
 tasks.withType<Test> {

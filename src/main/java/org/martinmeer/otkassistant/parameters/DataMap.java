@@ -1,4 +1,4 @@
-package org.martinmeer.otkassistant.params;
+package org.martinmeer.otkassistant.parameters;
 
 import lombok.Setter;
 import org.martinmeer.otkassistant.utils.Namespace;

@@ -1,0 +1,5 @@
+{"nom_diameter": "SELECT nom_diam FROM nom_diams WHERE nom_diam = ?;",
+  "pitch": "SELECT pitch_default FROM nom_diams WHERE nom_diam = ?;"
+
+
+}

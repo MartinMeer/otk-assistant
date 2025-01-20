@@ -1,6 +1,8 @@
 package org.martinmeer.otkassistant.jdbc;
 
-import org.martinmeer.utils.Namespace;
+
+
+import org.martinmeer.otkassistant.utils.Namespace;
 
 import java.io.IOException;
 import java.sql.Connection;
@@ -9,13 +11,14 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.Map;
 
-import static org.martinmeer.utils.Connector.psqlConnection;
+import static org.martinmeer.otkassistant.utils.Connector.psqlConnection;
 
-public class PitchDAO implements GostDAO<String>{
 
-    @Override
+public class PitchDAO{
+
+
     public String getValue(Map<Namespace, String> sql) throws SQLException, IOException {
-        String parameter = sql.get(Namespace.NOMINAL_SIZE);
+        String parameter = sql.get(Namespace.NOM_DIAMETER);
         String query = sql.get(Namespace.DB_QUERY);
         //String alias = "pitch_default";
         String value = "";

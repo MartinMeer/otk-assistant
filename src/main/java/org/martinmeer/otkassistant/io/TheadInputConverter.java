@@ -25,7 +25,7 @@ public class TheadInputConverter implements InputConverter{
         normalize(input);
         Map<Namespace, String> inputMap = new HashMap<>();
         inputMap.put(Namespace.DIRECTION, threadDirection(normalized));
-        inputMap.put(Namespace.NOMINAL_SIZE, nominalSize(normalized));
+        inputMap.put(Namespace.NOM_DIAMETER, nominalSize(normalized));
         inputMap.put(Namespace.MULTISTART_TREAD, multistartThread(normalized));
         inputMap.put(Namespace.PITCH, pitch(normalized));
         inputMap.put(Namespace.TOLERANCE_ZONE, toleranceZone(normalized));

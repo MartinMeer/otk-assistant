@@ -1,6 +1,6 @@
 package org.martinmeer.otkassistant.jdbc;
 
-import org.martinmeer.utils.Namespace;
+import org.martinmeer.otkassistant.utils.Namespace;
 
 import java.io.IOException;
 import java.sql.Connection;
@@ -9,13 +9,13 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.Map;
 
-import static org.martinmeer.utils.Connector.psqlConnection;
+import static org.martinmeer.otkassistant.utils.Connector.psqlConnection;
 
 public class CheckDAO{
 
 
     public String getValue(Map<Namespace, String> sql) throws SQLException, IOException {
-        String parameter = sql.get(Namespace.PARAMETER);
+        String parameter = sql.get(Namespace.SQL_PARAMETER);
         String query = sql.get(Namespace.DB_QUERY);
         String dbColumn = sql.get(Namespace.DB_ALIAS);
         String value = "";
