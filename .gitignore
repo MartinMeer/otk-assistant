@@ -36,3 +36,4 @@ out/
 ### VS Code ###
 .vscode/
 /old.martinmeer/
+/src/main/resources/misc/testSQLQueries
