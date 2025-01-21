@@ -15,7 +15,16 @@
     </bean>
 
     <bean id="dataMap"
-          class="org.martinmeer.otkassistant.parameters.DataMap">
+          class="org.martinmeer.otkassistant.POJOparams.DataMap">
+
+    </bean>
+
+    <bean id="nomDiameter"
+          class="org.martinmeer.otkassistant.POJOparams.m_thread.NomDiameter">
+
+    </bean>
+    <bean id="pitch"
+          class="org.martinmeer.otkassistant.POJOparams.m_thread.Pitch">
 
     </bean>
 

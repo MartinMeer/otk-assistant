@@ -1,4 +1,4 @@
-package org.martinmeer.otkassistant.parameters;
+package org.martinmeer.otkassistant.POJOparams;
 
 public interface Parameter {
     //void getFromDb();

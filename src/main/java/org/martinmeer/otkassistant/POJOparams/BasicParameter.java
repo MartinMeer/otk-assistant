@@ -1,4 +1,4 @@
-package org.martinmeer.otkassistant.parameters;
+package org.martinmeer.otkassistant.POJOparams;
 
 import lombok.Getter;
 

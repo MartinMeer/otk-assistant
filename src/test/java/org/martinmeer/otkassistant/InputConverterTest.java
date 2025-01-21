@@ -1,8 +1,9 @@
+package org.martinmeer.otkassistant;
+
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
 import org.martinmeer.otkassistant.io.InputConverter;
-import org.martinmeer.otkassistant.utils.Namespace;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
 import static org.assertj.core.api.Assertions.assertThat;

@@ -2,10 +2,12 @@ package org.martinmeer.otkassistant.engine;
 
 import lombok.Getter;
 
-import org.martinmeer.otkassistant.parameters.thread.NomDiameter;
-import org.martinmeer.otkassistant.parameters.thread.Pitch;
+import lombok.Setter;
+import org.martinmeer.otkassistant.POJOparams.m_thread.NomDiameter;
+import org.martinmeer.otkassistant.POJOparams.m_thread.Pitch;
 
 @Getter
+@Setter
 public class ThreadValueGen extends BasicValueGen implements ValueGenerator{
 
 

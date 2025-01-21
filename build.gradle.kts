@@ -66,6 +66,13 @@ dependencies {
     implementation("com.fasterxml.jackson.core:jackson-core:2.18.2")
     implementation("com.fasterxml.jackson.core:jackson-databind:2.18.2")
 
+    //JPA
+    implementation("jakarta.persistence:jakarta.persistence-api:3.2.0")
+    implementation("org.hibernate:hibernate-core:6.6.5.Final")
+
+    //Logging
+    implementation("org.apache.logging.log4j:log4j-core:2.24.3")
+
 }
 
 tasks.withType<Test> {
