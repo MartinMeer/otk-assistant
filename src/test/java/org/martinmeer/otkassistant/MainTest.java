@@ -66,14 +66,14 @@ public class MainTest {
     public void testDeviation_d2() throws SQLException, IOException {
         Pitch pitch = new Pitch(inputMap.getPitch());
         Deviation deviation = new Deviation(inputMap.get(ParamNames.TOLERANCE_ZONE), pitch);
-        deviation.generateValue();
+        deviation.generateValues();
         assertThat(deviation.getPitchDiamDeviance()).isEqualTo(50);
     }
     /*@Test
     public void testDeviation_d() throws SQLException, IOException {
         Pitch pitch = new Pitch(inputMap.get(ParamNames.PITCH));
         Deviation deviation = new Deviation(inputMap.get(ParamNames.TOLERANCE_ZONE), pitch);
-        deviation.generateValue();
+        deviation.generateValues();
         assertThat(deviation.getMajorDiamDeviance()).isEqualTo(50);
     }
 

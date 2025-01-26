@@ -4,10 +4,10 @@ import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
-import org.martinmeer.otkassistant.POJOparams.m_thread.NomDiameter;
-import org.martinmeer.otkassistant.POJOparams.m_thread.Pitch;
-import org.martinmeer.otkassistant.engine.Gen;
-import org.martinmeer.otkassistant.utils.Namespace;
+import org.martinmeer.otkassistant.mthread.domain.m_thread.NomDiameter;
+import org.martinmeer.otkassistant.mthread.domain.m_thread.Pitch;
+import org.martinmeer.otkassistant.mthread.service.Gen;
+import org.martinmeer.otkassistant.mthread.domain.MThrdNSpace;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -32,13 +32,13 @@ public class EntitiesTest {
 
     @Test
     public void getValue() {
-        Map<Namespace, String> dataMap = new HashMap<>();
-                dataMap.put(Namespace.NOM_DIAMETER, "8.8");
-                dataMap.put(Namespace.PITCH, null);
+        Map<MThrdNSpace, String> dataMap = new HashMap<>();
+                dataMap.put(MThrdNSpace.NOM_DIAMETER, "8.8");
+                dataMap.put(MThrdNSpace.PITCH, null);
         Gen gen = new Gen(dataMap);
         Map valueMap = gen.generateValueMap();
 
-        assertThat(valueMap.get(Namespace.NOM_DIAMETER)).isEqualTo(null);
+        assertThat(valueMap.get(MThrdNSpace.NOM_DIAMETER)).isEqualTo(null);
 
     }
 
