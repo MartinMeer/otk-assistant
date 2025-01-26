@@ -12,6 +12,7 @@ import org.martinmeer.otkassistant.mthread.domain.DataMap;
 import org.martinmeer.otkassistant.mthread.domain.m_thread.NomDiameter;
 import org.martinmeer.otkassistant.mthread.domain.m_thread.Pitch;
 import org.martinmeer.otkassistant.mthread.domain.MThrdNSpace;
+import org.martinmeer.otkassistant.ost22.domain.OstNSpace;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -53,7 +54,7 @@ public class Gen {
     private String getNomDiameterValue() {
         String fromColumn = "nom_diam";
         String whereColumn = "nom_diam";
-        String inputValue = dataMap.get(MThrdNSpace.NOM_DIAMETER);
+        String inputValue = dataMap.get(OstNSpace.NOM_DIMENSION);
         return getValueFromDB(NomDiameter.class, fromColumn, whereColumn, inputValue);
 
     }
