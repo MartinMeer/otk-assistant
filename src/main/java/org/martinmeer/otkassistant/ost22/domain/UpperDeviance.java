@@ -5,11 +5,12 @@ import org.martinmeer.otkassistant.core.GetValueFromDB;
 
 import java.math.BigDecimal;
 
-public class NominalDimension implements GetValueFromDB<BigDecimal> {
+@Getter
+public class UpperDeviance implements GetValueFromDB<BigDecimal> {
 
-    @Getter
-    private BigDecimal nominalDimension;
-    private
+    //MUST be > 0 for unspec_deviations!
+
+    private BigDecimal upperDeviance;
 
     @Override
     public BigDecimal getValueFromDb() {

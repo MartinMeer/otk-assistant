@@ -12,7 +12,7 @@ import java.math.BigDecimal;
 @NoArgsConstructor
 @Entity
 @Table(schema = "ost22", name = "unspec_deviances")
-public class UndefinedDeviances {
+public class UndefinedDeviances implements Deviance{
     private BigDecimal dimRange;
     private BigDecimal deviance;    
 }

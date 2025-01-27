@@ -9,7 +9,7 @@ public enum OstNSpace {
     SHAFT("shaft"),
     QUASI_HOLE("quasi_hole"),
     QUASI_SHAFT("quasi_shaft"),
-    DEV_VALUES("devValues"),
+    DEV_VALUES("devValues"), //0, -0.5 || +0.5, 0
     MAX_MES_VALUE("maxMesValue"),
     MIN_MES_VALUE("minMesValue");
 
@@ -24,6 +24,10 @@ public enum OstNSpace {
                 .orElseThrow(() -> new IllegalArgumentException(
                         "No OstNSpace enum constant with substr: " + substr
                 ));
+    }
+
+    public String toString() {
+        return name().toLowerCase();
     }
 
     private final String substr;
