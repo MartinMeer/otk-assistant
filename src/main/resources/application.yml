@@ -1,0 +1,13 @@
+spring:
+  datasource:
+    url: jdbc:postgresql://176.108.248.118:5432/otk
+    username: otkreader
+    password: victoria
+  jpa:
+    hibernate:
+      ddl-auto: validate # Используем Flyway для миграций
+    show-sql: true
+    properties:
+      hibernate:
+        default_schema: public
+        jdbc.lob.non_contextual_creation: true
