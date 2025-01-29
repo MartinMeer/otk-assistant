@@ -10,12 +10,10 @@ public class MinMeasuringValue implements MeasuringValuesGenerator<BigDecimal> {
 
     private BigDecimal minMesValue;
     private NominalDimension nominalDimension;
-    private LowerDeviance lowerDeviation;
+    private LowerDeviance lowerDeviance;
 
     @Override
     public BigDecimal generateValue() {
-        return nominalDimension.getNominalDimension().add(lowerDeviation.getLowerDeviation());
+        return nominalDimension.getNominalDimension().add(lowerDeviance.getLowerDeviance());
     }
-
-
 }

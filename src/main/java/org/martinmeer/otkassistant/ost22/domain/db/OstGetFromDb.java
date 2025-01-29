@@ -1,3 +1,4 @@
+/*
 package org.martinmeer.otkassistant.ost22.domain.db;
 
 import jakarta.persistence.NoResultException;
@@ -10,7 +11,7 @@ import org.hibernate.SessionFactory;
 import org.hibernate.cfg.Configuration;
 import org.martinmeer.otkassistant.core.DataMap;
 import org.martinmeer.otkassistant.ost22.domain.OstInputMap;
-import org.martinmeer.otkassistant.ost22.domain.OstNSpace;
+import org.martinmeer.otkassistant.ost22.repo.UndefinedDeviances;
 
 import java.math.BigDecimal;
 import java.util.Map;
@@ -23,8 +24,10 @@ public class OstGetFromDb {
     private String whereColumn;
     private BigDecimal inputValue;
 
+*/
 /**поднимает сессию
- * (где делать выбор схемы)?*/
+ * (где делать выбор схемы)?*//*
+
     private void sessionUp() {
         SessionFactory sessionFactory = new Configuration()
                 .configure("hibernate.cfg.xml")
@@ -33,7 +36,9 @@ public class OstGetFromDb {
         session = sessionFactory.getCurrentSession();
         session.beginTransaction();
     }
-/**выбирает нужную таблицу, получает значение по запросу из базы*/
+*/
+/**выбирает нужную таблицу, получает значение по запросу из базы*//*
+
     private BigDecimal getValueFromDb(DataMap inputMap) {
         Map dataMap = ostInputMap.getDataMap();
 
@@ -44,7 +49,9 @@ public class OstGetFromDb {
         return getValueFromDB(UndefinedDeviances.class, fromColumn, whereColumn, inputValue);
 
     }
-/**строит запрос SELECT*/
+*/
+/**строит запрос SELECT*//*
+
     private <T> BigDecimal getValueFromDB(Class<T> entity, String fromColumn, String whereColumn, BigDecimal inputValue) {
         CriteriaBuilder criteriaBuilder = session.getCriteriaBuilder();
         CriteriaQuery<BigDecimal> criteriaQuery = criteriaBuilder.createQuery(BigDecimal.class);
@@ -61,3 +68,4 @@ public class OstGetFromDb {
         }
     }
 }
+*/

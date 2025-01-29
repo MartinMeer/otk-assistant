@@ -1,4 +1,4 @@
-package org.martinmeer.otkassistant.ost22.domain.db;
+package org.martinmeer.otkassistant.ost22.repo;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.Table;
@@ -12,7 +12,7 @@ import java.math.BigDecimal;
 @NoArgsConstructor
 @Entity
 @Table(schema = "ost22", name = "unspec_deviances")
-public class UndefinedDeviances implements Deviance{
+public class UndefinedDeviances implements Deviance {
     private BigDecimal dimRange;
     private BigDecimal deviance;    
 }
