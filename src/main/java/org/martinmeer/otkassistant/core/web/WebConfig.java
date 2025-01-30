@@ -1,3 +1,4 @@
+/*
 package org.martinmeer.otkassistant.core.web;
 
 import org.springframework.context.annotation.Configuration;
@@ -13,3 +14,4 @@ public class WebConfig implements WebMvcConfigurer {
                 .allowedMethods("POST", "GET");
     }
 }
+*/
