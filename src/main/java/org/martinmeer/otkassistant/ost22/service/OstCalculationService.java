@@ -1,13 +1,16 @@
 package org.martinmeer.otkassistant.ost22.service;
 
-import org.martinmeer.otkassistant.core.DataMap;
 import org.martinmeer.otkassistant.ost22.domain.*;
+import org.springframework.stereotype.Service;
 
 import java.util.HashMap;
 import java.util.Map;
 
-public class OstOutputMap extends DataMap<OstNSpace> {
+@Service
+public class OstCalculationService {
 
+    private OstInputValidator ostInputValidator;
+    private OstInputConverter ostInputConverter;
     private NominalDimension nominalDimension;
     private UpperDeviance upperDeviance;
     private LowerDeviance lowerDeviance;
@@ -18,12 +21,12 @@ public class OstOutputMap extends DataMap<OstNSpace> {
     /**если маппится аут для второго раздела,
      * метод должен добавлять в ключ единицу (minMesValue -> minMesValue1
      * или это на уровне апи?*/
-    public Map<String, String> outputMapper() {
+    public Map<String, String> generateOutputMap() {
         Map<String, String> outputMap = new HashMap<>();
         outputMap.put(OstNSpace.DEV_VALUES.toString(),
                 upperDeviance.getUpperDeviance().toString()
-                + ", "
-                + lowerDeviance.getLowerDeviance().toString());
+                        + ", "
+                        + lowerDeviance.getLowerDeviance().toString());
         outputMap.put(OstNSpace.MAX_MES_VALUE.toString(),
                 maxMeasuringValue.getMaxMesValue().toString());
         outputMap.put(OstNSpace.MIN_MES_VALUE.toString(),
@@ -31,5 +34,6 @@ public class OstOutputMap extends DataMap<OstNSpace> {
 
         return outputMap;
     }
+
 
 }
