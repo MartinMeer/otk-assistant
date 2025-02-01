@@ -9,7 +9,7 @@ import jakarta.persistence.criteria.Root;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.cfg.Configuration;
-import org.martinmeer.otkassistant.core.DataMap;
+import org.martinmeer.otkassistant.core.model.DataMap;
 import org.martinmeer.otkassistant.ost22.domain.OstInputMap;
 import org.martinmeer.otkassistant.ost22.repo.UndefinedDeviances;
 

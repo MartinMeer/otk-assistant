@@ -1,9 +1,9 @@
 package org.martinmeer.otkassistant.core.web;
 
+import lombok.Getter;
 import lombok.Setter;
-import org.martinmeer.otkassistant.ost22.domain.OstOutputBody;
-import org.martinmeer.otkassistant.ost22.service.OstCalculationService;
-import org.martinmeer.otkassistant.ost22.service.OstOutputMapper;
+import org.martinmeer.otkassistant.core.model.CalculationService;
+import org.martinmeer.otkassistant.core.model.CalculationServiceFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -14,35 +14,37 @@ import java.util.Map;
 @Setter
 public class ApiController {
 
-    private OstCalculationService ostCalculationService;
+    private CalculationServiceFactory calculationServiceFactory;
 
     @Autowired
-    public ApiController(OstCalculationService ostCalculationService) {
-        this.ostCalculationService = ostCalculationService;
+    public ApiController(CalculationServiceFactory calculationServiceFactory) {
+        this.calculationServiceFactory = calculationServiceFactory;
     }
 
-    @PostMapping("/process-string")
+    @PostMapping("/process")
     public @ResponseBody Map<String, String> output(@RequestBody StringRequest request) {
-        String input = request.getInputString();
+
+        /*{
+  "inputData": "ost",
+  "inputString": "typeValue:sizeValue"
+}*/
+        String page = request.getInputData(); // "ost"
+        String input = request.getInputString(); // "exampleType:10.00"
+
+        CalculationService calculationService = calculationServiceFactory.getService(page);
 
         // Передаем строку в сервисный слой для обработки
-        Map<String, String> output = ostCalculationService.generateOutputMap(input);
 
         // Возвращаем результат в виде объекта StringResponse
-        return output;
+        return calculationService.generateOutput(input);
     }
 
     // Вложенный класс для представления входного запроса
+    @Getter
+    @Setter
     public static class StringRequest {
+        private String inputData;
         private String inputString;
-
-        public String getInputString() {
-            return inputString;
-        }
-
-        public void setInputString(String inputString) {
-            this.inputString = inputString;
-        }
     }
 }
 

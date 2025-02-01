@@ -1,7 +1,7 @@
 package org.martinmeer.otkassistant.ost22.service;
 
-import org.martinmeer.otkassistant.core.InputNormalizer;
-import org.springframework.stereotype.Service;
+import org.martinmeer.otkassistant.core.model.InputNormalizer;
+import org.springframework.stereotype.Component;
 
 
 public class OstInputNormalizer implements InputNormalizer {

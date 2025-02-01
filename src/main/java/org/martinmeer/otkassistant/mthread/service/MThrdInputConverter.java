@@ -1,8 +1,8 @@
 package org.martinmeer.otkassistant.mthread.service;
 
 import lombok.Setter;
-import org.martinmeer.otkassistant.core.InputConverter;
-import org.martinmeer.otkassistant.core.InputNormalizer;
+import org.martinmeer.otkassistant.core.model.InputConverter;
+import org.martinmeer.otkassistant.core.model.InputNormalizer;
 import org.martinmeer.otkassistant.mthread.domain.MThrdNSpace;
 
 import java.util.HashMap;

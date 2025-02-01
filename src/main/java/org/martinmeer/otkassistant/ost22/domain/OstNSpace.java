@@ -4,6 +4,9 @@ import java.util.Arrays;
 
 public enum OstNSpace {
     NOM_DIMENSION("nom_dimension"),
+    TYPE_OF_DETAIL(""),
+    UPPER_DEVIANCE(""),
+    LOWER_DEVIANCE(""),
     UNDEF("undef"),
     HOLE("hole"),
     SHAFT("shaft"),

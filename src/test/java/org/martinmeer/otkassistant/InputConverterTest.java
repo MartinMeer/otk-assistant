@@ -3,7 +3,7 @@ package org.martinmeer.otkassistant;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
-import org.martinmeer.otkassistant.core.InputConverter;
+import org.martinmeer.otkassistant.core.model.InputConverter;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
 import static org.assertj.core.api.Assertions.assertThat;

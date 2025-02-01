@@ -2,7 +2,7 @@
 package org.martinmeer.otkassistant.ost22.service;
 
 import lombok.Setter;
-import org.martinmeer.otkassistant.core.DataMap;
+import org.martinmeer.otkassistant.core.model.DataMap;
 import org.martinmeer.otkassistant.ost22.domain.*;
 import org.springframework.stereotype.Component;
 

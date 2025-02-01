@@ -1,4 +1,4 @@
-package org.martinmeer.otkassistant.core;
+package org.martinmeer.otkassistant.core.model;
 
 import org.martinmeer.otkassistant.mthread.domain.MThrdNSpace;
 

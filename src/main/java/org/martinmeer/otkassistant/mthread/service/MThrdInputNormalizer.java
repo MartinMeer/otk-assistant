@@ -1,6 +1,6 @@
 package org.martinmeer.otkassistant.mthread.service;
 
-import org.martinmeer.otkassistant.core.InputNormalizer;
+import org.martinmeer.otkassistant.core.model.InputNormalizer;
 
 public class MThrdInputNormalizer implements InputNormalizer {
 

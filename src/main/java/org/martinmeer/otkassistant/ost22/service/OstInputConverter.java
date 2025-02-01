@@ -1,28 +1,28 @@
 package org.martinmeer.otkassistant.ost22.service;
 
 import lombok.Setter;
-import org.martinmeer.otkassistant.core.InputConverter;
-import org.martinmeer.otkassistant.core.InputNormalizer;
+import org.martinmeer.otkassistant.core.model.InputConverter;
+import org.martinmeer.otkassistant.core.model.InputNormalizer;
 import org.martinmeer.otkassistant.mthread.domain.MThrdNSpace;
 import org.martinmeer.otkassistant.ost22.domain.OstNSpace;
-import org.martinmeer.otkassistant.ost22.model.OstStringHttpRequest;
+import org.springframework.stereotype.Component;
 
+import java.math.BigDecimal;
 import java.util.HashMap;
 import java.util.Map;
 
-@Setter
-public class OstInputConverter implements InputConverter {
-    private OstStringHttpRequest ostStringHttpRequest; //hole:20.2 // undef:50.3
-    private InputNormalizer inputNormalizer; //OstInputNormalizer
+@Component
+public class OstInputConverter{
+    //hole:20.2 // undef:50.3
 
-    @Override
-    public Map<MThrdNSpace, String> generateDataMap() {
-        String input = ostStringHttpRequest.getInputString();
-        String normalized = inputNormalizer.normalize(input);
-        String key = (input.split(":"))[0];
-        String value = (input.split(":"))[1];
-        Map<OstNSpace, String> inputMap = new HashMap<>();
-        inputMap.put(OstNSpace.valueFromEnum(key), value);
-        return Map.of();
+
+    public Map<OstNSpace, Object> generateDataMap(String input) {
+        String typeOfDetail = (input.split(":"))[0];
+        String nominalDimensionStr = (input.split(":"))[1];
+        BigDecimal nominalDimension = new BigDecimal(nominalDimensionStr);
+        Map<OstNSpace, Object> dataMap = new HashMap<>();
+        dataMap.put(OstNSpace.TYPE_OF_DETAIL, typeOfDetail);
+        dataMap.put(OstNSpace.NOM_DIMENSION, nominalDimension);
+        return dataMap;
     }
 }
