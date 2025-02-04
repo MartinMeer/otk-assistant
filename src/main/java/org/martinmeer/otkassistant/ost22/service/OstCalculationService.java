@@ -9,6 +9,11 @@ import java.math.BigDecimal;
 import java.util.HashMap;
 import java.util.Map;
 
+ /*const pageId = 'ost';
+       value = response.deviance_values || '';
+        response.min_mes_value || '';
+       response.max_mes_value || '';*/
+
 @Component
 public class OstCalculationService implements CalculationService {
 
@@ -47,7 +52,7 @@ public class OstCalculationService implements CalculationService {
 
         //Шаг 4. Формирование ответа на фронтенд
         Map<String, String> outputMap = new HashMap<>();
-        outputMap.put(OstNSpace.DEV_VALUES.toString(),
+        outputMap.put(OstNSpace.DEVIANCE_VALUES.toString(),
                 deviances.get(OstNSpace.UPPER_DEVIANCE)
                         + ", "
                         + deviances.get(OstNSpace.LOWER_DEVIANCE));

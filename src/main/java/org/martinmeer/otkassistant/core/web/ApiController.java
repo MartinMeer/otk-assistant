@@ -25,7 +25,7 @@ public class ApiController {
     public @ResponseBody Map<String, String> output(@RequestBody StringRequest request) {
 
         /*{
-  "inputData": "ost",
+  pageId = "ost", 'm-thread'
   "inputString": "typeValue:sizeValue"
 }*/
         String page = request.getInputData(); // "ost"

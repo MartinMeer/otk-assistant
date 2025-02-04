@@ -12,7 +12,7 @@ public enum OstNSpace {
     SHAFT("shaft"),
     QUASI_HOLE("quasi_hole"),
     QUASI_SHAFT("quasi_shaft"),
-    DEV_VALUES("devValues"), //0, -0.5 || +0.5, 0
+    DEVIANCE_VALUES("devValues"), //0, -0.5 || +0.5, 0
     MAX_MES_VALUE("maxMesValue"),
     MIN_MES_VALUE("minMesValue");
 
