@@ -5,20 +5,20 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
 import lombok.Getter;
-import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.math.BigDecimal;
+
 @Getter
 @Setter
-@NoArgsConstructor
 @Entity
-@Table(schema = "ost22", name = "unspec_deviances")
-public class UndefinedDeviances implements Deviance {
-
+@Table(name = "undef_deviances", schema = "ost22")
+public class UndefDeviance {
     @Id
-    @Column(name = "dim_range")
-    private BigDecimal dimRange;
-    @Column(name = "deviance")
+    @Column(name = "dim_range", columnDefinition = "numrange not null")
+    private Object id;
+
+    @Column(name = "deviance", precision = 4, scale = 3)
     private BigDecimal deviance;
+
 }
