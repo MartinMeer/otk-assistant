@@ -3,9 +3,8 @@ package org.martinmeer.otkassistant.mthread.service;
 import lombok.Getter;
 
 import lombok.Setter;
-import org.martinmeer.otkassistant.core.model.ValueGenerator;
-import org.martinmeer.otkassistant.mthread.domain.m_thread.NomDiameter;
-import org.martinmeer.otkassistant.mthread.domain.m_thread.Pitch;
+import org.martinmeer.otkassistant.mthread.model.m_thread.NomDiameter;
+import org.martinmeer.otkassistant.mthread.model.m_thread.Pitch;
 
 @Getter
 @Setter

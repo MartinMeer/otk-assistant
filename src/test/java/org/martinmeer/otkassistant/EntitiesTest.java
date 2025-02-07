@@ -4,10 +4,10 @@ import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
-import org.martinmeer.otkassistant.mthread.domain.m_thread.NomDiameter;
-import org.martinmeer.otkassistant.mthread.domain.m_thread.Pitch;
+import org.martinmeer.otkassistant.mthread.model.m_thread.NomDiameter;
+import org.martinmeer.otkassistant.mthread.model.m_thread.Pitch;
 import org.martinmeer.otkassistant.mthread.service.Gen;
-import org.martinmeer.otkassistant.mthread.domain.MThrdNSpace;
+import org.martinmeer.otkassistant.mthread.model.MThrdNSpace;
 
 import java.util.HashMap;
 import java.util.Map;

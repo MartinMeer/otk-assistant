@@ -1,7 +1,6 @@
 package org.martinmeer.otkassistant.ost22.service;
 
-import org.martinmeer.otkassistant.ost22.domain.*;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.martinmeer.otkassistant.ost22.model.*;
 import org.springframework.stereotype.Component;
 
 import java.math.BigDecimal;

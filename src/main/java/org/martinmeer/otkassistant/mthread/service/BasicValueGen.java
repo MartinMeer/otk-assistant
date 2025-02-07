@@ -1,9 +1,8 @@
 package org.martinmeer.otkassistant.mthread.service;
 
 import lombok.Setter;
-import org.martinmeer.otkassistant.core.model.InputConverter;
-import org.martinmeer.otkassistant.core.model.ValueGenerator;
-import org.martinmeer.otkassistant.mthread.domain.DataMap;
+import org.martinmeer.otkassistant.core.service.InputRefiner;
+import org.martinmeer.otkassistant.mthread.model.DataMap;
 
 import java.util.Map;
 
@@ -11,7 +10,7 @@ import java.util.Map;
 public class BasicValueGen implements ValueGenerator {
 
     private String input;
-    private InputConverter inputConverter;
+    private InputRefiner inputConverter;
     private DataMap dataMap;
     private Map sqlQueries;
     private Map outputValues;

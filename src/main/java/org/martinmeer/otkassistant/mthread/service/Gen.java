@@ -8,11 +8,11 @@ import jakarta.persistence.criteria.Root;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.cfg.Configuration;
-import org.martinmeer.otkassistant.mthread.domain.DataMap;
-import org.martinmeer.otkassistant.mthread.domain.m_thread.NomDiameter;
-import org.martinmeer.otkassistant.mthread.domain.m_thread.Pitch;
-import org.martinmeer.otkassistant.mthread.domain.MThrdNSpace;
-import org.martinmeer.otkassistant.ost22.domain.OstNSpace;
+import org.martinmeer.otkassistant.mthread.model.DataMap;
+import org.martinmeer.otkassistant.mthread.model.m_thread.NomDiameter;
+import org.martinmeer.otkassistant.mthread.model.m_thread.Pitch;
+import org.martinmeer.otkassistant.mthread.model.MThrdNSpace;
+import org.martinmeer.otkassistant.ost22.model.OstNSpace;
 
 import java.util.HashMap;
 import java.util.Map;
