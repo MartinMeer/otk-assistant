@@ -8,14 +8,19 @@ import java.math.BigDecimal;
 
 @Component
 @Getter
-public class MinMeasuringValue implements MeasuringValuesGenerator<BigDecimal> {
+public class MeasuringValues implements MeasuringValuesGenerator<BigDecimal> {
 
-    private BigDecimal minMesValue;
+    private BigDecimal maxMesValue; // must eliminate zeroes from decimal part
     private NominalDimension nominalDimension;
-    private LowerDeviance lowerDeviance;
+    private UpperDeviance upperDeviation;
+
 
     @Override
     public BigDecimal generateValue() {
-        return nominalDimension.getNominalDimension().add(lowerDeviance.getLowerDeviance());
+        return null;
+    }
+
+    public String toString() {
+        return maxMesValue.toString();
     }
 }

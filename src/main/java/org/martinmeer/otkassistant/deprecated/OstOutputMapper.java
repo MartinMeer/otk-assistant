@@ -16,7 +16,7 @@ public class OstOutputMapper extends DataMap<OstNSpace> {
     private NominalDimension nominalDimension;
     private UpperDeviance upperDeviance;
     private LowerDeviance lowerDeviance;
-    private MaxMeasuringValue maxMeasuringValue;
+    private MeasuringValues maxMeasuringValue;
     private MinMeasuringValue minMeasuringValue;
 
 

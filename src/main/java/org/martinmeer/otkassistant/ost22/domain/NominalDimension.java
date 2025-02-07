@@ -11,6 +11,8 @@ import java.math.BigDecimal;
 public class NominalDimension implements GetValueFromDB<BigDecimal> {
 
     private BigDecimal nominalDimension;
+    private OstInputDataMap ostInputDataMap;
+
 
 
     @Override

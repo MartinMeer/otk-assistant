@@ -16,13 +16,16 @@ public class OstInputConverter{
     //hole:20.2 // undef:50.3
 
 
-    public Map<OstNSpace, Object> generateDataMap(String input) {
-        String typeOfDetail = (input.split(":"))[0];
-        String nominalDimensionStr = (input.split(":"))[1];
-        BigDecimal nominalDimension = new BigDecimal(nominalDimensionStr);
-        Map<OstNSpace, Object> dataMap = new HashMap<>();
-        dataMap.put(OstNSpace.TYPE_OF_DETAIL, typeOfDetail);
-        dataMap.put(OstNSpace.NOM_DIMENSION, nominalDimension);
-        return dataMap;
+        public Map<OstNSpace, Object> convertInput(String input) {
+            String typeOfDetail = (input.split(":"))[0];
+            String nominalDimensionStr = (input.split(":"))[1];
+
+            BigDecimal nominalDimension = new BigDecimal(nominalDimensionStr);
+
+            Map<OstNSpace, Object> dataMap = new HashMap<>();
+            dataMap.put(OstNSpace.TYPE_OF_DETAIL, typeOfDetail);
+            dataMap.put(OstNSpace.NOM_DIMENSION, nominalDimension);
+
+        return convertedInput;
     }
 }

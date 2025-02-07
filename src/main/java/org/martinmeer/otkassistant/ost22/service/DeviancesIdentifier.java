@@ -1,5 +1,6 @@
 package org.martinmeer.otkassistant.ost22.service;
 
+import org.martinmeer.otkassistant.ost22.domain.OstInputDataMap;
 import org.martinmeer.otkassistant.ost22.domain.OstNSpace;
 import org.springframework.stereotype.Component;
 
@@ -12,7 +13,9 @@ public class DeviancesIdentifier {
 
 
 
-    public Map<OstNSpace, BigDecimal> getDeviances(Map<OstNSpace, Object> dataMap) {
+
+
+    public Map<OstNSpace, BigDecimal> getDeviances(OstInputDataMap ostInputDataMap) {
         String typeOfDetail = (String) dataMap.get(OstNSpace.TYPE_OF_DETAIL);
         BigDecimal nominalDimension = (BigDecimal) dataMap.get(OstNSpace.NOM_DIMENSION);
 
