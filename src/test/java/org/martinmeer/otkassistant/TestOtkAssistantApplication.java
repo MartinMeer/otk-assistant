@@ -1,3 +1,4 @@
+/*
 package org.martinmeer.otkassistant;
 
 import org.springframework.boot.SpringApplication;
@@ -9,3 +10,4 @@ public class TestOtkAssistantApplication {
     }
 
 }
+*/

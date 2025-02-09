@@ -2,15 +2,15 @@ package org.martinmeer.otkassistant.ost22.service;
 
 import org.martinmeer.otkassistant.core.model.sceletal.CalculatedData;
 import org.martinmeer.otkassistant.core.model.sceletal.FetchedData;
-import org.martinmeer.otkassistant.core.service.CalculatedDataProcessor;
+import org.martinmeer.otkassistant.core.service.OutputDataMapper;
 import org.springframework.stereotype.Component;
 
 import java.util.Map;
 
 @Component
-public class ostCalculatedDataProcessor extends CalculatedDataProcessor {
+public class OstOutputDataMapper implements OutputDataMapper {
     @Override
-    public Map<String, CalculatedData> genCalculatedDataMap(Map<String, FetchedData> fetchedDataMap) {
+    public Map<String, String> generateOutputData(Map<String, FetchedData> fetchedDataMap, Map<String, CalculatedData> calculatedDataMap) {
         return Map.of();
     }
 }

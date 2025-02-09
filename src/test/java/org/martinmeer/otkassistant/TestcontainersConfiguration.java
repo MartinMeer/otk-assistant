@@ -1,3 +1,4 @@
+/*
 package org.martinmeer.otkassistant;
 
 import org.springframework.boot.test.context.TestConfiguration;
@@ -16,3 +17,4 @@ class TestcontainersConfiguration {
     }
 
 }
+*/

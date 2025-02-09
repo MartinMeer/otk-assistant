@@ -1,38 +1,36 @@
 package org.martinmeer.otkassistant.core.service;
 
-import lombok.Setter;
-import org.martinmeer.otkassistant.core.model.InputData;
-import org.martinmeer.otkassistant.core.model.OutputDataMapper;
+import org.martinmeer.otkassistant.core.model.sceletal.InputData;
 import org.springframework.stereotype.Service;
 
 import java.util.Map;
 
 @Service
-public abstract class MainService<E extends Enum<E>, V> {
+public class MainService {
 
-    @Setter
-    private InputData inputData;
-    private InputRefiner<E, V> inputRefiner;
-    private ComparedDataProcessor<E, V> comparedDataProcessor;
-    private CalculatedDataProcessor calculatedDataProcessor;
-    private OutputDataMapper outputDataMapper;
+    private final InputData inputData;
+    private final FetchedDataProcessor fetchedDataProcessor;
+    private final CalculatedDataProcessor calculatedDataProcessor;
+    private final OutputDataMapper outputDataMapper;
 
+    public MainService(InputData inputData,
+                       FetchedDataProcessor fetchedDataProcessor,
+                       CalculatedDataProcessor calculatedDataProcessor,
+                       OutputDataMapper outputDataMapper) {
 
-    //public abstract Map<String, String> generateOutput(String input);
-
-    public MainService(InputRefiner<E, V> inputRefiner, ComparedDataProcessor<E, V> comparedDataProcessor, CalculatedDataProcessor calculatedDataProcessor, OutputDataMapper outputDataMapper) {
         this.inputData = inputData;
-        this.inputRefiner = inputRefiner;
-        this.comparedDataProcessor = comparedDataProcessor;
+        this.fetchedDataProcessor = fetchedDataProcessor;
         this.calculatedDataProcessor = calculatedDataProcessor;
         this.outputDataMapper = outputDataMapper;
     }
 
     public Map<String, String> generateOutput(String input) {
-        inputRefiner.generateDataMap(input);
-
-        return outputDataMapper.generateOutputData();
-    };
+        var rawData = inputData.createInputData(input);
+        fetchedDataProcessor.setInputData(rawData);
+        var fetchedDataMap = fetchedDataProcessor.genFetchedDataMap();
+        var calculatedDataMap = calculatedDataProcessor.genCalculatedDataMap(fetchedDataMap);
+        return outputDataMapper.generateOutputData(fetchedDataMap, calculatedDataMap);
+    }
 
 
 }

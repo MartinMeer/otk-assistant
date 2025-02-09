@@ -1,4 +1,5 @@
-package org.martinmeer.otkassistant.mthread.service.utils;
+/*
+package org.martinmeer.otkassistant.core.model.deprecated.utils;
 
 import java.io.IOException;
 import java.sql.Connection;
@@ -27,3 +28,4 @@ public class Connector {
         return connection;
     }
 }
+*/

@@ -1,3 +1,4 @@
+/*
 package org.martinmeer.otkassistant;
 
 import org.junit.jupiter.api.BeforeAll;
@@ -34,11 +35,13 @@ public class InputRefinerTest {
 
 
 
-       /* assertThat(dataMap.getParameter(Namespace.NOM_DIAMETER)).isEqualTo("2.25");
+       */
+/* assertThat(dataMap.getParameter(Namespace.NOM_DIAMETER)).isEqualTo("2.25");
         assertThat(dataMap.getParameter(Namespace.MULTISTART_TREAD)).isEqualTo("многозаходная резьба"); //"многозаходная резьба"
         assertThat(dataMap.getParameter(Namespace.PITCH)).isEqualTo("0.45");
         assertThat(dataMap.getParameter(Namespace.TOLERANCE_ZONE)).isEqualTo("6e6g");
-        assertThat(dataMap.getParameter(Namespace.DIRECTION)).isEqualTo("левая резьба"); //"левая резьба"*/
+        assertThat(dataMap.getParameter(Namespace.DIRECTION)).isEqualTo("левая резьба"); //"левая резьба"*//*
+
     }
 
-}
+}*/

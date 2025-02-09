@@ -1,4 +1,5 @@
-package org.martinmeer.otkassistant.mthread.service.utils;
+/*
+package org.martinmeer.otkassistant.core.model.deprecated.utils;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -15,9 +16,11 @@ public class PropertyManager {
 
     //private static PathMap pathMap;
 
-    /*private PropertyManager(PathMap pathMap) {
+    */
+/*private PropertyManager(PathMap pathMap) {
         this.pathMap = pathMap;
-    }*/
+    }*//*
+
 
     public static Map<String, String> generateProps() throws IOException {
         //Map<String,Path> pathToProperties = pathMap.getPathToProperties();
@@ -35,3 +38,4 @@ public class PropertyManager {
         return connSettings;
     }
 }
+*/

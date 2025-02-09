@@ -1,4 +1,5 @@
-package org.martinmeer.otkassistant.mthread.service.utils;
+/*
+package org.martinmeer.otkassistant.core.model.deprecated.utils;
 
 import org.yaml.snakeyaml.Yaml;
 
@@ -31,7 +32,8 @@ public class OtkParser {
         }
     }
 
-    /*public static <T> Map<T, List<Number>> parseYaml(Path path) {
+    */
+/*public static <T> Map<T, List<Number>> parseYaml(Path path) {
         File file = path.toFile();
         try {
             Yaml yaml = new Yaml();
@@ -40,7 +42,8 @@ public class OtkParser {
         } catch (NumberFormatException | IOException e) {
             throw new RuntimeException(e);
         }
-    }*/
+    }*//*
+
     public static <T> T parseYaml(Path path) {
         File file = path.toFile();
         try {
@@ -53,3 +56,4 @@ public class OtkParser {
     }
 }
 
+*/

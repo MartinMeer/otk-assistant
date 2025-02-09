@@ -1,10 +1,8 @@
 package org.martinmeer.otkassistant.mthread.service;
 
-import org.martinmeer.otkassistant.core.model.InputNormalizer;
+public class MThrdInputNormalizer {
 
-public class MThrdInputNormalizer implements InputNormalizer {
 
-    @Override
     public String normalize(String input) {
         return input
                 .toLowerCase()

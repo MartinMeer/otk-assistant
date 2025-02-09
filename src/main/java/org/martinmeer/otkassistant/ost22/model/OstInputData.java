@@ -1,24 +1,26 @@
 package org.martinmeer.otkassistant.ost22.model;
 
-import org.martinmeer.otkassistant.core.model.InputData;
+import lombok.Getter;
+import org.martinmeer.otkassistant.core.model.sceletal.InputData;
+import org.springframework.stereotype.Component;
 
-import java.util.EnumMap;
-
+@Component
+@Getter
 public class OstInputData extends InputData {
 
     private String detailType;
 
-    public OstInputData(EnumMap<OstNSpace, String> generateDataMap) {
-        super(input);
+
+    @Override
+    protected String normalize(String input) {
+        return input.toLowerCase().trim();
     }
 
     @Override
-    public String normalize(String input) {
-        return "";
-    }
-
-    @Override
-    public <E extends Enum<E>, V> EnumMap<E, V> generateDataMap(String input) {
-        return null;
+    protected void refineData(String str) {
+        String normalizedInput = normalize(str);
+        detailType = (normalizedInput.split(":"))[0];
+        inputDimension = (normalizedInput.split(":"))[1];
     }
 }
+
