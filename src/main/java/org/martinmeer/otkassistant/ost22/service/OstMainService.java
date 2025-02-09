@@ -1,8 +1,13 @@
 package org.martinmeer.otkassistant.ost22.service;
 
+import org.martinmeer.otkassistant.core.model.OutputDataMapper;
+import org.martinmeer.otkassistant.core.service.CalculatedDataProcessor;
+import org.martinmeer.otkassistant.core.service.ComparedDataProcessor;
+import org.martinmeer.otkassistant.core.service.InputRefiner;
 import org.martinmeer.otkassistant.core.service.MainService;
 import org.martinmeer.otkassistant.ost22.model.*;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Component;
 
 import java.math.BigDecimal;
@@ -18,21 +23,11 @@ import java.util.Map;
 public class OstMainService extends MainService {
 
 
-    private final OstInputRefiner ostInputRefiner;
-    private final OstInputValidator ostInputValidator;
-    private final DeviancesIdentifier deviancesIdentifier;
-    private final OstCalculator ostCalculator;
-
-    @Autowired
-    public OstMainService(OstInputRefiner ostInputRefiner, OstInputValidator ostInputValidator, DeviancesIdentifier deviancesIdentifier, OstCalculator ostCalculator) {
-        this.ostInputRefiner = ostInputRefiner;
-        this.ostInputValidator = ostInputValidator;
-        this.deviancesIdentifier = deviancesIdentifier;
-        this.ostCalculator = ostCalculator;
+    public OstMainService(@Qualifier("ostInputRefiner") InputRefiner inputRefiner, @Qualifier("ostComparedDataProcessor") ComparedDataProcessor comparedDataProcessor, @Qualifier("ostCalculatedDataProcessor") CalculatedDataProcessor calculatedDataProcessor, OutputDataMapper outputDataMapper) {
+        super(inputRefiner, comparedDataProcessor, calculatedDataProcessor, outputDataMapper);
     }
 
-
-    @Override
+    /*@Override
     public Map<String, String> generateOutput(String input) {
         // Шаг 1: Конвертация строки
         Map<OstNSpace, Object> dataMap = ostInputRefiner.generateDataMap(input);
@@ -61,5 +56,5 @@ public class OstMainService extends MainService {
         outputMap.put(OstNSpace.MIN_MES_VALUE.toString(),
                 measuringValues.get(OstNSpace.MIN_MES_VALUE).toString());
         return outputMap;
-    }
+    }*/
 }

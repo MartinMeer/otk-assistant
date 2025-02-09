@@ -33,7 +33,7 @@ public class ApiController {
         /**Call main service for separate page*/
         MainService mainService = mainServiceFactory.getService(page);
 
-        /**Возвращаем результат в виде объекта StringResponse*/
+        //Возвращаем результат в виде объекта StringResponse/
         return mainService.generateOutput(input);
     }
 

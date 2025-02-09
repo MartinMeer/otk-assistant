@@ -6,11 +6,11 @@ import java.util.EnumMap;
 import java.util.Map;
 
 @Component
-public interface InputRefiner<E extends Enum<E>, V> {
+public interface InputRefiner {
 
     String normalize(String input);
 
-    public EnumMap<E, V> generateDataMap(String input);
+    public <E extends Enum<E>, V> EnumMap<E, V> generateDataMap(String input);
 
 
 }

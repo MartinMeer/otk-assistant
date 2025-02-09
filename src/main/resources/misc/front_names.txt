@@ -1,4 +1,14 @@
 /*
+const type = document.getElementById('detail_type').value.trim(); // Значение из выпадающего списка
+const size = document.getElementById('nominal_dimension').value.trim();
+
+document.getElementById('deviance_values').value = response.deviation_values || '';
+document.getElementById('min_mes_value').value = response.min_mes_value  || '';
+document.getElementById('max_mes_value').value = response.max_mes_value  || '';
+
+
+
+/*
 pageId = 'm-thread';
 value = response.pitch_diameter || '';
         value = response.es_d2 || '';

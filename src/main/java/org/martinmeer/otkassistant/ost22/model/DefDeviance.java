@@ -1,4 +1,4 @@
-package org.martinmeer.otkassistant.ost22.repo;
+package org.martinmeer.otkassistant.ost22.model;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;

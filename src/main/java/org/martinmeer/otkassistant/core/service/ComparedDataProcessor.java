@@ -21,8 +21,6 @@ public abstract class ComparedDataProcessor<E extends Enum<E>, V> {
     @Setter
     private EnumMap<E, V> inputDataMap;
 
-
-
     private NominalDimension nominalDimension;
     private UpperDeviance upperDeviance;
     private LowerDeviance lowerDeviance;
