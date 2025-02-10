@@ -11,9 +11,9 @@ import java.sql.SQLException;
 @Getter
 @Setter
 public abstract class FetchedData {
-    protected String rawData;
+    protected String baseData;
     protected Object fetchedData;
-    //protected String sql;
+    protected String sql;
 
     public abstract void getValueFromDB(Connection connection) throws SQLException;
 

@@ -9,10 +9,11 @@ import org.martinmeer.otkassistant.core.model.sceletal.InputData;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 
 import java.util.Map;
 
-@Component
+@Service
 @FieldNameConstants
 @Getter
 public abstract class FetchedDataProcessor {
@@ -26,7 +27,7 @@ public abstract class FetchedDataProcessor {
     protected UpperDeviance upperDeviance;
     protected LowerDeviance lowerDeviance;
 
-    @Autowired
+
     public FetchedDataProcessor(JdbcTemplate jdbcTemplate) {
         //this.ostInputData = ostInputData;
         this.jdbcTemplate = jdbcTemplate;

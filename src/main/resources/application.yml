@@ -1,23 +1,16 @@
-server:
-  port: 8080
-
 spring:
   datasource:
-    url: jdbc:postgresql://176.108.248.118:5432/otk
-    username: otkreader
-    password: victoria
-    driver-class-name: org.postgresql.Driver
-  jpa:
-    hibernate:
-      ddl-auto: none # Используем Flyway для миграций
-    show-sql: true
-    properties:
-      hibernate:
-        default_schema: public
-        jdbc.lob.non_contextual_creation: true
-        jdbc:
-          batch_size: 0
+    #driver-class-name: org.postgresql.Driver
+    jndi-name: java:comp/env/jdbc/otk
+
+
+
+  # Этот параметр устанавливает уровень логирования для всего приложения на DEBUG.
+  # Это полезно для отладки,
+  # но в production-среде рекомендуется установить более высокий уровень логирования (например, INFO или WARN).
+  # Если возникают проблемы, увеличьте уровень логирования до TRACE
 
 logging:
   level:
-    root: debug
+    root: info
+    org.springframework.jdbc.core: debug

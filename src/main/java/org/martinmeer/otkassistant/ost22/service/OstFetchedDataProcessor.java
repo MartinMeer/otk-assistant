@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Component;
 
+
 @Component
 @FieldNameConstants
 @Getter
@@ -24,9 +25,11 @@ public class OstFetchedDataProcessor extends FetchedDataProcessor {
         this.ostInputData = ostInputData;
     }
 
+
+
     @Override
     protected void init() {
-        nominalDimension.setRawData(ostInputData.getInputDimension());
+        nominalDimension.setBaseData(ostInputData.getInputDimension());
     }
 
     @Override

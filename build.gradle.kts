@@ -17,6 +17,10 @@ java {
     }
 }
 
+tasks.war {
+    archiveFileName.set("otkassist.war") // Название WAR-файла
+}
+
 configurations {
     compileOnly {
         extendsFrom(configurations.annotationProcessor.get())
@@ -48,7 +52,7 @@ dependencies {
     //developmentOnly("org.springframework.boot:spring-boot-docker-compose")
     runtimeOnly("org.postgresql:postgresql")
 
-    providedRuntime("org.springframework.boot:spring-boot-starter-tomcat")
+    //providedRuntime("org.springframework.boot:spring-boot-starter-tomcat")
 
     // Thymeleaf
     implementation("org.thymeleaf.extras:thymeleaf-extras-springsecurity6")
@@ -57,6 +61,8 @@ dependencies {
     //Spring-web
     //Jackson
     //JDBC
+    providedRuntime("org.apache.tomcat.embed:tomcat-embed-core") // Удаляем встроенный Tomcat
+    providedCompile("javax.servlet:javax.servlet-api:4.0.1") // Добавляем сервлет API
     //JPA
 
     //Test
