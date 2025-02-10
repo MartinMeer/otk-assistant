@@ -5,11 +5,11 @@ import org.springframework.stereotype.Component;
 
 @Component
 @Getter
-public abstract class InputData {
+public abstract class AbstractInputData {
 
     protected String inputDimension;
 
-    public InputData createInputData(String input) {
+    public AbstractInputData createInputData(String input) {
         refineData(normalize(input));
         return this;
     }

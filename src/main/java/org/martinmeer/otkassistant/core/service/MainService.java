@@ -1,6 +1,6 @@
 package org.martinmeer.otkassistant.core.service;
 
-import org.martinmeer.otkassistant.core.model.sceletal.InputData;
+import org.martinmeer.otkassistant.core.model.sceletal.AbstractInputData;
 import org.springframework.stereotype.Service;
 
 import java.util.Map;
@@ -8,12 +8,12 @@ import java.util.Map;
 @Service
 public class MainService {
 
-    private final InputData inputData;
+    private final AbstractInputData inputData;
     private final FetchedDataProcessor fetchedDataProcessor;
     private final CalculatedDataProcessor calculatedDataProcessor;
     private final OutputDataMapper outputDataMapper;
 
-    public MainService(InputData inputData,
+    public MainService(AbstractInputData inputData,
                        FetchedDataProcessor fetchedDataProcessor,
                        CalculatedDataProcessor calculatedDataProcessor,
                        OutputDataMapper outputDataMapper) {

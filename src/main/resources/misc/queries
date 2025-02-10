@@ -1,4 +1,6 @@
 ost22.
+
+select 10.0 from ost22.def_deviances where nom_dim_range @> 10.0; //check if exist
 select hole from ost22.def_deviances where nom_dim_range @> 20.0;
 select quasi_shaft from ost22.def_deviances where nom_dim_range @> 40.5;
 select deviance from ost22.undef_deviances where dim_range @> 8.0;

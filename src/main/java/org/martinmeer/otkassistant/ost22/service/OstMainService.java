@@ -1,6 +1,7 @@
 package org.martinmeer.otkassistant.ost22.service;
 
-import org.martinmeer.otkassistant.core.model.sceletal.InputData;
+import org.martinmeer.otkassistant.core.model.sceletal.AbstractInputData;
+import org.martinmeer.otkassistant.core.model.sceletal.AbstractInputData;
 import org.martinmeer.otkassistant.core.service.OutputDataMapper;
 import org.martinmeer.otkassistant.core.service.CalculatedDataProcessor;
 import org.martinmeer.otkassistant.core.service.FetchedDataProcessor;
@@ -19,7 +20,7 @@ import org.springframework.stereotype.Component;
 public class OstMainService extends MainService {
 
     @Autowired
-    public OstMainService(@Qualifier("ostInputData") InputData inputData,
+    public OstMainService(@Qualifier("ostInputData") AbstractInputData inputData,
                           @Qualifier("ostFetchedDataProcessor") FetchedDataProcessor fetchedDataProcessor,
                           @Qualifier("ostCalculatedDataProcessor") CalculatedDataProcessor calculatedDataProcessor,
                           @Qualifier("ostOutputDataMapper") OutputDataMapper outputDataMapper) {

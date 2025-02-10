@@ -1,16 +1,15 @@
 package org.martinmeer.otkassistant.core.service;
 
-import org.martinmeer.otkassistant.core.model.sceletal.CalculatedData;
-import org.martinmeer.otkassistant.core.model.sceletal.FetchedData;
+import org.martinmeer.otkassistant.core.model.sceletal.AbstractCalculatedData;
+import org.martinmeer.otkassistant.core.model.sceletal.AbstractFetchedData;
 import org.springframework.stereotype.Component;
 
-import java.util.EnumMap;
 import java.util.Map;
 
 @Component
 public interface OutputDataMapper {
 
-    Map <String, String> generateOutputData(Map<String, FetchedData> fetchedDataMap,
-                              Map<String, CalculatedData> calculatedDataMap);
+    Map <String, String> generateOutputData(Map<String, AbstractFetchedData> fetchedDataMap,
+                              Map<String, AbstractCalculatedData> calculatedDataMap);
 
 }

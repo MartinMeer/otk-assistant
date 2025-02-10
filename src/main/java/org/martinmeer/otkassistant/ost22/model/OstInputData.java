@@ -1,12 +1,13 @@
 package org.martinmeer.otkassistant.ost22.model;
 
 import lombok.Getter;
-import org.martinmeer.otkassistant.core.model.sceletal.InputData;
+import org.martinmeer.otkassistant.core.model.sceletal.AbstractInputData;
+import org.martinmeer.otkassistant.core.model.sceletal.AbstractInputData;
 import org.springframework.stereotype.Component;
 
 @Component
 @Getter
-public class OstInputData extends InputData {
+public class OstInputData extends AbstractInputData {
 
     private String detailType;
 
