@@ -1,3 +1,4 @@
+/*
 package org.martinmeer.otkassistant.core.model;
 
 import org.martinmeer.otkassistant.core.model.sceletal.AbstractFetchedData;
@@ -7,9 +8,10 @@ import java.sql.Connection;
 import java.sql.SQLException;
 
 @Component
-public class LowerDeviance extends AbstractFetchedData {
+public class LowerDeviance {
     @Override
     public void getValueFromDB(Connection connection) throws SQLException {
 
     }
 }
+*/

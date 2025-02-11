@@ -8,7 +8,7 @@ import org.springframework.stereotype.Component;
 import java.util.Map;
 
 @Component
-public abstract class CalculatedDataProcessor {
+public abstract class CalculatedDataService {
 
     @Setter
     protected Map<String, AbstractFetchedData> fetchedDataMap;

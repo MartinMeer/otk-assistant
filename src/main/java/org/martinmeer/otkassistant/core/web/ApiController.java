@@ -24,17 +24,17 @@ public class ApiController {
     @PostMapping("/process")
     public @ResponseBody Map<String, String> output(@RequestBody StringRequest request) {
 
-        /*JSON from frontend: { pageId = "ost", 'm-thread'
+        /*JSON from frontend: { pageId = "ost22", 'm-thread'
                                "inputString": "typeValue:sizeValue"}*/
 
-        String page = request.getInputData(); // "ost"
+        String page = request.getInputData(); // "ost22"
         String input = request.getInputString(); // "exampleType:10.00"
 
         /**Call main service for separate page*/
         MainService mainService = mainServiceFactory.getService(page);
 
         //Возвращаем результат в виде объекта StringResponse/
-        return mainService.generateOutput(input);
+        return mainService.generateOutput(page, input);
     }
 
     // Вложенный класс для представления входного запроса

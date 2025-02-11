@@ -1,4 +1,9 @@
 /*
+padeId=ost22
+const page = 'ost22';
+    const inputString = `${type}:${size}`;
+    const inputData = { pageId, inputString };
+
 const type = document.getElementById('detail_type').value.trim(); // Значение из выпадающего списка
 const size = document.getElementById('nominal_dimension').value.trim();
 
@@ -9,7 +14,7 @@ document.getElementById('max_mes_value').value = response.max_mes_value  || '';
 
 
 /*
-pageId = 'm-thread';
+pageId = 'thread_m';
 value = response.pitch_diameter || '';
         value = response.es_d2 || '';
         value = response.ei_d2 || '';

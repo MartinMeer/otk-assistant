@@ -3,32 +3,31 @@ package org.martinmeer.otkassistant.core.model.sceletal;
 import lombok.Getter;
 import lombok.Setter;
 import org.martinmeer.otkassistant.core.model.DataFetcher;
+import org.martinmeer.otkassistant.core.service.SchemaAwareNamedParameterJdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
-import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
-import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 
 import java.math.BigDecimal;
+import java.util.Collections;
+import java.util.Map;
 
 @Setter
 @Getter
-public abstract class AbstractFetchedData implements DataFetcher {
+public abstract class AbstractFetchedData<T> {
 
 
     protected String baseData;
-    protected Object fetchedData;
+    protected T fetchedData;
     protected String sql;
 
-    private final NamedParameterJdbcTemplate namedParameterJdbcTemplate;
+    private final SchemaAwareNamedParameterJdbcTemplate dbQueryTemplate;
 
-    protected AbstractFetchedData(NamedParameterJdbcTemplate namedParameterJdbcTemplate) {
-        this.namedParameterJdbcTemplate = namedParameterJdbcTemplate;
+    protected AbstractFetchedData(SchemaAwareNamedParameterJdbcTemplate dbQueryTemplate) {
+        this.dbQueryTemplate = dbQueryTemplate;
     }
 
-    @Override
     public void fetchFromDatabase() {
-        // Выполняем запрос с использованием NamedParameterJdbcTemplate
-        MapSqlParameterSource params = new MapSqlParameterSource("baseData", typeConverter(baseData));
-        Object result = namedParameterJdbcTemplate.queryForObject(
+        Map<String, Object> params = Collections.singletonMap("baseData", typeConverter(baseData));
+        T result = dbQueryTemplate.queryWithSchema(
                 sql,
                 params,
                 getObjectMapper()
@@ -36,10 +35,11 @@ public abstract class AbstractFetchedData implements DataFetcher {
         setFetchedData(result);
     }
 
-    protected abstract <T> T typeConverter(String baseData);
+    protected abstract void setSql();
+
+    protected abstract T typeConverter(String baseData);
 
     // Абстрактный метод для преобразования результата запроса
-    protected abstract RowMapper<?> getObjectMapper();
-
+    protected abstract RowMapper<T> getObjectMapper();
 
 }

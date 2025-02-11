@@ -11,25 +11,24 @@ import org.springframework.stereotype.Service;
 
 import java.util.Map;
 
-@Service
+
 @FieldNameConstants
 @Getter
-public abstract class FetchedDataProcessor {
+public abstract class FetchedDataService {
 
     @Setter
     protected AbstractInputData inputData;
 
-    protected final JdbcTemplate jdbcTemplate;
+    protected final SchemaAwareNamedParameterJdbcTemplate jdbcTemplate;
 
     protected NominalDimensionFetcher nominalDimension;
     protected UpperDeviance upperDeviance;
     protected LowerDeviance lowerDeviance;
 
-
-    public FetchedDataProcessor(JdbcTemplate jdbcTemplate) {
-        //this.ostInputData = ostInputData;
+    protected FetchedDataService(SchemaAwareNamedParameterJdbcTemplate jdbcTemplate) {
         this.jdbcTemplate = jdbcTemplate;
     }
+
 
     //Step 1. Initialize init fields in fetched classes from ostInputData
 
@@ -41,6 +40,7 @@ public abstract class FetchedDataProcessor {
 
     //Step 3. Fetch data from DB, init fetchedDataFields
     protected abstract void fetchData();
+    protected abstract void setSchema();
 
     //Step 4. gen MapOf fetched classes for CalcService
 

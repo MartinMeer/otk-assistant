@@ -1,34 +1,35 @@
 package org.martinmeer.otkassistant.core.service;
 
 import org.martinmeer.otkassistant.core.model.sceletal.AbstractInputData;
-import org.springframework.stereotype.Service;
 
 import java.util.Map;
 
-@Service
-public class MainService {
 
+public abstract class MainService {
+
+    private final SchemaAwareNamedParameterJdbcTemplate jdbcTemplate;
     private final AbstractInputData inputData;
-    private final FetchedDataProcessor fetchedDataProcessor;
-    private final CalculatedDataProcessor calculatedDataProcessor;
+    private final FetchedDataService fetchedDataService;
+    private final CalculatedDataService calculatedDataService;
     private final OutputDataMapper outputDataMapper;
 
-    public MainService(AbstractInputData inputData,
-                       FetchedDataProcessor fetchedDataProcessor,
-                       CalculatedDataProcessor calculatedDataProcessor,
+    public MainService(SchemaAwareNamedParameterJdbcTemplate jdbcTemplate, AbstractInputData inputData,
+                       FetchedDataService fetchedDataService,
+                       CalculatedDataService calculatedDataService,
                        OutputDataMapper outputDataMapper) {
-
+        this.jdbcTemplate = jdbcTemplate;
         this.inputData = inputData;
-        this.fetchedDataProcessor = fetchedDataProcessor;
-        this.calculatedDataProcessor = calculatedDataProcessor;
+        this.fetchedDataService = fetchedDataService;
+        this.calculatedDataService = calculatedDataService;
         this.outputDataMapper = outputDataMapper;
     }
 
-    public Map<String, String> generateOutput(String input) {
+    public Map<String, String> generateOutput(String page, String input) {
+        jdbcTemplate.setSchemaName(page);
         var rawData = inputData.createInputData(input);
-        fetchedDataProcessor.setInputData(rawData);
-        var fetchedDataMap = fetchedDataProcessor.genFetchedDataMap();
-        var calculatedDataMap = calculatedDataProcessor.genCalculatedDataMap(fetchedDataMap);
+        fetchedDataService.setInputData(rawData);
+        var fetchedDataMap = fetchedDataService.genFetchedDataMap();
+        var calculatedDataMap = calculatedDataService.genCalculatedDataMap(fetchedDataMap);
         return outputDataMapper.generateOutputData(fetchedDataMap, calculatedDataMap);
     }
 

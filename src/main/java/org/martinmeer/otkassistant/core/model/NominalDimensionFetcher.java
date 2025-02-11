@@ -1,3 +1,4 @@
+/*
 package org.martinmeer.otkassistant.core.model;
 
 import lombok.Getter;
@@ -9,7 +10,7 @@ import java.math.BigDecimal;
 
 
 @Getter
-public class NominalDimensionFetcher extends AbstractFetchedData {
+public class NominalDimensionFetcher {
 
     protected NominalDimensionFetcher(NamedParameterJdbcTemplate namedParameterJdbcTemplate,
                                       String baseData) {
@@ -32,3 +33,4 @@ public class NominalDimensionFetcher extends AbstractFetchedData {
         return (rs, rowNum) -> rs.getBigDecimal(":filterValue");
     }
 }
+*/
