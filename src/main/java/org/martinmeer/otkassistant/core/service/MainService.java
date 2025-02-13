@@ -2,6 +2,8 @@ package org.martinmeer.otkassistant.core.service;
 
 import org.martinmeer.otkassistant.core.model.sceletal.AbstractInputData;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 
 
@@ -27,7 +29,8 @@ public abstract class MainService {
     public Map<String, String> generateOutput(String page, String input) {
         jdbcTemplate.setSchemaName(page);
         var rawData = inputData.createInputData(input);
-        fetchedDataService.setInputData(rawData);
+        //fetchedDataService.setInputData(rawData);
+        //List fetchedData = new ArrayList<>(new );
         var fetchedDataMap = fetchedDataService.genFetchedDataMap();
         var calculatedDataMap = calculatedDataService.genCalculatedDataMap(fetchedDataMap);
         return outputDataMapper.generateOutputData(fetchedDataMap, calculatedDataMap);

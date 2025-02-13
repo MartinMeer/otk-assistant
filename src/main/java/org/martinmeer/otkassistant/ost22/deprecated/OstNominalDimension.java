@@ -1,3 +1,4 @@
+/*
 package org.martinmeer.otkassistant.ost22.model;
 
 import lombok.Getter;
@@ -11,10 +12,9 @@ import java.math.BigDecimal;
 
 @Component
 @Getter
-@Setter
-public class OstNominalDimension extends AbstractFetchedData<BigDecimal> {
+public class OstNominalDimension extends AbstractFetchedData<BigDecimal> implements OstDefinableData{
 
-    private String detailType;
+    private String definition;
 
     protected OstNominalDimension(SchemaAwareNamedParameterJdbcTemplate dbQueryTemplate) {
         super(dbQueryTemplate);
@@ -36,4 +36,9 @@ public class OstNominalDimension extends AbstractFetchedData<BigDecimal> {
     protected RowMapper<BigDecimal> getObjectMapper() {
         return null;
     }
-}
+
+    @Override
+    public void setDefinition(String definition) {
+        this.definition = definition;
+    }
+}*/

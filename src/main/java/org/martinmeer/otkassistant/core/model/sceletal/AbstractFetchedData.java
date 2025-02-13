@@ -35,8 +35,6 @@ public abstract class AbstractFetchedData<T> {
         setFetchedData(result);
     }
 
-    protected abstract void setSql();
-
     protected abstract T typeConverter(String baseData);
 
     // Абстрактный метод для преобразования результата запроса

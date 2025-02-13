@@ -9,6 +9,7 @@ import org.martinmeer.otkassistant.core.model.sceletal.AbstractInputData;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Map;
 
 
@@ -16,33 +17,19 @@ import java.util.Map;
 @Getter
 public abstract class FetchedDataService {
 
-    @Setter
-    protected AbstractInputData inputData;
+
+    protected final AbstractInputData inputData;
 
     protected final SchemaAwareNamedParameterJdbcTemplate jdbcTemplate;
 
-    protected NominalDimensionFetcher nominalDimension;
-    protected UpperDeviance upperDeviance;
-    protected LowerDeviance lowerDeviance;
+    protected final List fetchedData;
 
-    protected FetchedDataService(SchemaAwareNamedParameterJdbcTemplate jdbcTemplate) {
+    protected FetchedDataService(AbstractInputData inputData, SchemaAwareNamedParameterJdbcTemplate jdbcTemplate, List fetchedData) {
+        this.inputData = inputData;
         this.jdbcTemplate = jdbcTemplate;
+        this.fetchedData = fetchedData;
     }
 
-
-    //Step 1. Initialize init fields in fetched classes from ostInputData
-
-    protected abstract void init();
-
-    /* Step 2 (if necessary): Initialize init fields in fetched classes from DB:
-     - via separate conn?
-     - via  initialization arranging in single conn?*/
-
-    //Step 3. Fetch data from DB, init fetchedDataFields
-    protected abstract void fetchData();
-    protected abstract void setSchema();
-
-    //Step 4. gen MapOf fetched classes for CalcService
 
     public Map<String, AbstractFetchedData> genFetchedDataMap() {
         return Map.of(Fields.nominalDimension, nominalDimension,
