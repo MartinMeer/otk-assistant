@@ -23,10 +23,10 @@ public class SchemaAwareNamedParameterJdbcTemplate {
         this.namedParameterJdbcTemplate = new NamedParameterJdbcTemplate(dataSource);
     }
 
-    public <T> T queryWithSchema(String sql, Map<String, Object> params, RowMapper<T> rowMapper) {
+    public <T> T queryWithSchema(String sql, Map<String, Object> params, Class<T> clazz) {
         try {
             jdbcTemplate.execute("SET LOCAL search_path TO " + sanitizeSchemaName(schemaName));
-            return namedParameterJdbcTemplate.queryForObject(sql, params, rowMapper);
+            return namedParameterJdbcTemplate.queryForObject(sql, params, clazz);
         } catch (DataAccessException e) {
             throw new RuntimeException("Error setting schema or executing query", e);
         }

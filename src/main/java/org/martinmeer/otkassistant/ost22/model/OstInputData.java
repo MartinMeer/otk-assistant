@@ -8,7 +8,7 @@ import org.springframework.stereotype.Component;
 @Getter
 public class OstInputData extends AbstractInputData {
 
-    private String dimensionDefinition;
+    protected String TEST;
 
 
     @Override

@@ -1,19 +1,20 @@
 package org.martinmeer.otkassistant.ost22.model;
 
 import lombok.Setter;
+import org.martinmeer.otkassistant.core.service.SqlBuilder;
 import org.springframework.stereotype.Component;
 
-import java.util.Map;
 import java.util.StringJoiner;
 
 @Component
 @Setter
-public class OstSqlBuilder {
+public class OstSqlBuilder implements SqlBuilder {
 
     private String definedColumn;
     private String table;
     private String whereColumn;
 
+    @Override
     public String buildSelectSql() {
         StringJoiner sj = new StringJoiner(" ");
         sanitizeIdentifiers(); // Проверка на SQL-инъекции
