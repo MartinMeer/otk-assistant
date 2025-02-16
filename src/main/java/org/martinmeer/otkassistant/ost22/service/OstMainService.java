@@ -22,13 +22,13 @@ public class OstMainService implements MainService {
     private final SchemaAwareNamedParameterJdbcTemplate jdbcTemplate;
     private String sql;
 
-    private String dimensionDefinition;
-    private BigDecimal nominalDimension;
+    String dimensionDefinition;
+    BigDecimal nominalDimension;
 
 
-    private BigDecimal baseDeviance;
-    private BigDecimal upperDeviance;
-    private BigDecimal lowerDeviance;
+    BigDecimal baseDeviance;
+    BigDecimal upperDeviance;
+    BigDecimal lowerDeviance;
 
     private BigDecimal maxMeasuringValue;
     private BigDecimal minMeasuringValue;
@@ -62,7 +62,7 @@ public class OstMainService implements MainService {
         }
     }
 
-    private void setNominalDimension(String baseDimension) {
+    void setNominalDimension(String baseDimension) {
         this.nominalDimension = new BigDecimal(baseDimension);
     }
 
@@ -108,14 +108,14 @@ public class OstMainService implements MainService {
         }
     }
 
-    private void setDeviances() {
+    void setDeviances() {
         switch (dimensionDefinition) {
             case "hole", "quasi_hole" -> {
                 upperDeviance = baseDeviance;
-                lowerDeviance = new BigDecimal(0);
+                lowerDeviance = BigDecimal.ZERO;
             }
             case "shaft", "quasi_shaft" -> {
-                upperDeviance = new BigDecimal(0);
+                upperDeviance = BigDecimal.ZERO;
                 lowerDeviance = baseDeviance.negate();
             }
             case "undef" -> {
@@ -127,15 +127,16 @@ public class OstMainService implements MainService {
     }
 
 
-    private BigDecimal calculateMeasuringValues(BigDecimal dimension, BigDecimal deviance) {
+    BigDecimal calculateMeasuringValues(BigDecimal dimension, BigDecimal deviance) {
         return dimension.add(deviance);
     }
 
-    private Map<String, String> outputMapper() {
+    Map<String, String> outputMapper() {
         Map<String, String> output = new HashMap<>();
-        maxMeasuringValue = calculateMeasuringValues(baseDeviance, maxMeasuringValue);
-        minMeasuringValue = calculateMeasuringValues(baseDeviance, minMeasuringValue);
+        maxMeasuringValue = calculateMeasuringValues(nominalDimension, maxMeasuringValue);
+        minMeasuringValue = calculateMeasuringValues(nominalDimension, minMeasuringValue);
         String devianceValues = lowerDeviance.toString()
+                + ", "
                 + upperDeviance.toString();
         output.put("deviance_values", devianceValues);
         output.put("max_mes_value", maxMeasuringValue.toString());
