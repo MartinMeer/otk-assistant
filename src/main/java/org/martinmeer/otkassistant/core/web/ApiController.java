@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.Map;
 
+@CrossOrigin(origins = "https://otk-help.martinmeer.com/")
 @RestController // Parse JSON for response automatically
 @RequestMapping("/api")
 @Setter
@@ -32,6 +33,10 @@ public class ApiController {
 
         /**Call main service for separate page*/
         MainService mainService = mainServiceFactory.getService(page);
+
+        if (mainService == null) {
+            throw new IllegalArgumentException("Unknown page: " + page);
+        }
 
         //Возвращаем результат в виде объекта StringResponse/
         return mainService.generateOutput(page, input);
