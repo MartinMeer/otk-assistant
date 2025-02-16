@@ -2,8 +2,8 @@ package org.martinmeer.otkassistant.core.web;
 
 import lombok.Getter;
 import lombok.Setter;
-import org.martinmeer.otkassistant.core.service.sceletal.MainService;
 import org.martinmeer.otkassistant.core.service.MainServiceFactory;
+import org.martinmeer.otkassistant.core.service.MainService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 

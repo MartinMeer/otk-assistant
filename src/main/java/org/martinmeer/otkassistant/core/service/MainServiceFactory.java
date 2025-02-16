@@ -1,8 +1,6 @@
 package org.martinmeer.otkassistant.core.service;
 
-import org.martinmeer.otkassistant.core.service.sceletal.MainService;
 import org.martinmeer.otkassistant.facets.service.FacetMainService;
-//import org.martinmeer.otkassistant.mthread.service.MThreadMainService;
 import org.martinmeer.otkassistant.ost22.service.OstMainService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -10,25 +8,25 @@ import org.springframework.stereotype.Component;
 @Component
 public class MainServiceFactory {
 
-    private final OstMainService ostCalculationService;
+    private final OstMainService ostMainService;
     //private final MThreadMainService mThreadCalculationService;
-    private final FacetMainService facetCalculationService;
+    private final FacetMainService facetMainService;
 
     @Autowired
-    public MainServiceFactory(OstMainService ostCalculationService,
+    public MainServiceFactory(OstMainService ostMainService,
                               //MThreadMainService mThreadCalculationService,
-                              FacetMainService facetCalculationService) {
-        this.ostCalculationService = ostCalculationService;
+                              FacetMainService facetMainService) {
+        this.ostMainService = ostMainService;
         //this.mThreadCalculationService = mThreadCalculationService;
-        this.facetCalculationService = facetCalculationService;
+        this.facetMainService = facetMainService;
     }
 
     public MainService getService(String page) {
 
         return switch (page) {
-            case "ost22" -> ostCalculationService;
+            case "ost22" -> ostMainService;
             //case "thread_m" -> mThreadCalculationService;
-            case "facet" -> facetCalculationService;
+            case "facet" -> facetMainService;
             default -> throw new IllegalArgumentException("Unknown page type");
         };
     }

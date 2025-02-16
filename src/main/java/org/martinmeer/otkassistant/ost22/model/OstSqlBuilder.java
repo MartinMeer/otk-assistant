@@ -35,7 +35,7 @@ public class OstSqlBuilder implements SqlBuilder {
         }
     }
 
-    // Простейшая валидация (например, разрешить только буквы и цифры "[a-zA-Z0-9_]+")
+    // Разрешить только буквы и цифры "[a-zA-Z0-9_]+")
     private boolean isValidIdentifier(String identifier) {
         return identifier.matches("^[a-zA-Z0-9_]+$");
     }

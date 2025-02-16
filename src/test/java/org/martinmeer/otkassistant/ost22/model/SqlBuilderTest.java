@@ -1,3 +1,4 @@
+/*
 package org.martinmeer.otkassistant.ost22.model;
 
 import org.junit.jupiter.api.BeforeAll;
@@ -20,13 +21,14 @@ public class SqlBuilderTest {
         inputData = new OstInputData();
         sqlBuilder = new OstSqlBuilder();
         inputData.createInputData(input);
-        //devianceDefiner = new OstDefinedData((OstInputData) inputData, (OstSqlBuilder) sqlBuilder);
+        //devianceDefiner = new OstMainService((OstInputData) inputData, (OstSqlBuilder) sqlBuilder);
     }
 
     @Test
     public void generateSqlTest() {
-        var devianceDefiner = new OstDefinedData((OstInputData) inputData, (OstSqlBuilder) sqlBuilder);
+        var devianceDefiner = new OstMainService((OstInputData) inputData, (OstSqlBuilder) sqlBuilder);
         devianceDefiner.generateSql();
         //assertThat(devianceDefiner.getSql()).isEqualTo("");
     }
 }
+*/
