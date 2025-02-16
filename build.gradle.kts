@@ -33,6 +33,7 @@ repositories {
 
 extra["snippetsDir"] = file("build/generated-snippets")
 
+val mockitoAgent = configurations.create("mockitoAgent")
 dependencies {
     annotationProcessor("org.springframework.boot:spring-boot-configuration-processor")
     annotationProcessor("org.projectlombok:lombok")
@@ -74,6 +75,10 @@ dependencies {
     //testImplementation("org.testcontainers:postgresql")
     testRuntimeOnly("org.junit.platform:junit-platform-launcher")
 
+    testImplementation(libs.mockito)
+    mockitoAgent(libs.mockito) { isTransitive = false }
+
+
     //Logging
     implementation("org.springframework.boot:spring-boot-starter-log4j2")
     configurations {
@@ -90,6 +95,9 @@ tasks.withType<Test> {
 
 tasks.test {
     outputs.dir(project.extra["snippetsDir"]!!)
+
+    jvmArgs("-javaagent:${mockitoAgent.asPath}")
+
 }
 
 tasks.asciidoctor {
