@@ -13,7 +13,6 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.math.BigDecimal;
-import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.*;
@@ -44,7 +43,7 @@ class OstMainServiceTest {
     private static Field lowerDevianceField;
 
     @BeforeEach
-    void seUp() throws NoSuchMethodException, NoSuchFieldException {
+    void setUp() throws NoSuchMethodException, NoSuchFieldException {
         // Access private method via reflection
         method = OstMainService.class.getDeclaredMethod("generateDefinedData", SchemaAwareNamedParameterJdbcTemplate.class);
         method.setAccessible(true);
