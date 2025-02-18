@@ -1,3 +1,6 @@
 BasicDimension
 BasicUpperDeviance
 BasicLowerDeviance
+
+scp otkassist.war olegmm@192.144.12.110:/opt/tomcat11/webapps
+

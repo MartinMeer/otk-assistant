@@ -6,6 +6,7 @@ plugins {
     id("org.asciidoctor.jvm.convert") version "3.3.2"
     //checkstyle
     id("com.github.ben-manes.versions") version "0.51.0"
+    //id("nu.studer.dotenv") version "3.0.0"
 }
 
 group = "org.martinmeer"
@@ -17,15 +18,12 @@ java {
     }
 }
 
-tasks.war {
-    archiveFileName.set("otkassist.war") // Название WAR-файла
-}
-
 configurations {
     compileOnly {
         extendsFrom(configurations.annotationProcessor.get())
     }
 }
+
 
 repositories {
     mavenCentral()
@@ -43,7 +41,7 @@ dependencies {
     implementation("org.springframework.boot:spring-boot-starter-actuator")
     implementation("org.springframework.boot:spring-boot-starter-data-rest")
     implementation("org.springframework.boot:spring-boot-starter-freemarker")
-    implementation("org.springframework.boot:spring-boot-starter-security")
+    //implementation("org.springframework.boot:spring-boot-starter-security")
     implementation("org.springframework.boot:spring-boot-starter-web")
     implementation("org.springframework.boot:spring-boot-starter-web-services")
     implementation("org.springframework.boot:spring-boot-starter-jdbc")
@@ -53,8 +51,6 @@ dependencies {
     //developmentOnly("org.springframework.boot:spring-boot-docker-compose")
     runtimeOnly("org.postgresql:postgresql")
 
-    //providedRuntime("org.springframework.boot:spring-boot-starter-tomcat")
-
     // Thymeleaf
     implementation("org.thymeleaf.extras:thymeleaf-extras-springsecurity6")
 
@@ -62,12 +58,14 @@ dependencies {
     //Spring-web
     //Jackson
     //JDBC
-    providedRuntime("org.apache.tomcat.embed:tomcat-embed-core") // Удаляем встроенный Tomcat
+    providedRuntime("org.springframework.boot:spring-boot-starter-tomcat") // Удаляем встроенный Tomcat
     providedCompile("javax.servlet:javax.servlet-api:4.0.1") // Добавляем сервлет API
     //JPA
 
     //Test
-    testImplementation("org.springframework.boot:spring-boot-starter-test")
+    testImplementation("org.springframework.boot:spring-boot-starter-test") {
+        exclude(group = "org.junit.vintage", module = "junit-vintage-engine")
+    }
     //testImplementation("org.springframework.boot:spring-boot-testcontainers")
     testImplementation("org.springframework.restdocs:spring-restdocs-mockmvc")
     testImplementation("org.springframework.security:spring-security-test")
@@ -86,14 +84,28 @@ dependencies {
             exclude(group = "org.springframework.boot", module = "spring-boot-starter-logging")
         }
     }
+    implementation("io.github.cdimascio:dotenv-java:3.1.0")
 
 }
 
-tasks.withType<Test> {
-    useJUnitPlatform()
+//tasks
+
+tasks.war {
+    archiveFileName.set("otkassist.war") // Название WAR-файла
 }
+
+
+//tasks.withType<Test> {}
 
 tasks.test {
+    useJUnitPlatform{
+        excludeTags("excludeFromBuild") // Exclude tests with this tag
+    }
+    systemProperty("spring.profiles.active", "test")
+
+
+    //environment("DB_USERNAME", ("DB_USERNAME"))
+    //environment("DB_PASSWORD", System.getenv("DB_PASSWORD"))
     outputs.dir(project.extra["snippetsDir"]!!)
 
     jvmArgs("-javaagent:${mockitoAgent.asPath}")
@@ -104,3 +116,4 @@ tasks.asciidoctor {
     inputs.dir(project.extra["snippetsDir"]!!)
     dependsOn(tasks.test)
 }
+

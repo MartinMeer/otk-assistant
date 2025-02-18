@@ -37,3 +37,4 @@ out/
 .vscode/
 /old.martinmeer/
 /src/main/resources/misc/testSQLQueries
+/src/main/java/org/martinmeer/otkassistant/.env

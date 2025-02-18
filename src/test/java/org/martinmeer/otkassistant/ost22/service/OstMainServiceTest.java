@@ -13,11 +13,11 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.math.BigDecimal;
+import java.util.Map;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.*;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
 class OstMainServiceTest {
@@ -52,7 +52,8 @@ class OstMainServiceTest {
         upperDevianceField = getField(OstMainService.class, "upperDeviance");
         lowerDevianceField = getField(OstMainService.class, "lowerDeviance");
         String inputDimension = "20.0";
-        when(inputData.getInputDimension()).thenReturn(inputDimension);
+        lenient().when(inputData.getInputDimension()).thenReturn(inputDimension);
+
     }
 
     @Test
@@ -133,5 +134,22 @@ class OstMainServiceTest {
         return field;
     }
 
+    @Test
+    void outputMapper_ReturnsCorrectValues() throws IllegalAccessException {
+        // Arrange: Set required fields using reflection
+        nominalDimensionField.set(ostMainService, new BigDecimal("20.0"));
+        upperDevianceField.set(ostMainService, new BigDecimal("0.05"));
+        lowerDevianceField.set(ostMainService, new BigDecimal("-0.05"));
 
+// Act
+        Map<String, String> result = ostMainService.outputMapper();
+
+        // Assert
+        assertAll(
+                () -> assertEquals("0.05", result.get("upper_deviance")),
+                () -> assertEquals("-0.05", result.get("lower_deviance")),
+                () -> assertEquals("20.05", result.get("max_mes_value")),
+                () -> assertEquals("19.95", result.get("min_mes_value"))
+        );
+    }
 }

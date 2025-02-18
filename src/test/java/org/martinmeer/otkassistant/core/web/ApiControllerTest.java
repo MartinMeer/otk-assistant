@@ -38,7 +38,6 @@ class ApiControllerTest {
         mockMvc = MockMvcBuilders.standaloneSetup(apiController)
                 .setControllerAdvice(new GlobalExceptionHandler())
                 .build();
-
     }
 
     @Test

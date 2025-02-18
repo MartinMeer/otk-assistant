@@ -152,12 +152,11 @@ public class OstMainService implements MainService {
 
     Map<String, String> outputMapper() {
         Map<String, String> output = new HashMap<>();
-        maxMeasuringValue = calculateMeasuringValues(nominalDimension, maxMeasuringValue);
-        minMeasuringValue = calculateMeasuringValues(nominalDimension, minMeasuringValue);
-        String devianceValues = lowerDeviance.toString()
-                + ", "
-                + upperDeviance.toString();
-        output.put("deviance_values", devianceValues);
+        maxMeasuringValue = calculateMeasuringValues(nominalDimension, upperDeviance);
+        minMeasuringValue = calculateMeasuringValues(nominalDimension, lowerDeviance);
+
+        output.put("upper_deviance", upperDeviance.toString());
+        output.put("lower_deviance", lowerDeviance.toString());
         output.put("max_mes_value", maxMeasuringValue.toString());
         output.put("min_mes_value", minMeasuringValue.toString());
         return output;
