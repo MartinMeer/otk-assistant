@@ -1,0 +1,14 @@
+spring:
+
+  datasource:
+
+    url: jdbc:postgresql://176.108.248.118:5432/otk
+    username: otkreader
+    password: MUST BE SET LOCALLY
+    driver-class-name: org.postgresql.Driver
+
+
+logging:
+  level:
+    root: info
+    org.springframework.jdbc.core: trace

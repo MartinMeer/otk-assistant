@@ -6,7 +6,7 @@ import org.junit.jupiter.api.Test;
 import org.martinmeer.otkassistant.MainApp;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
-import org.springframework.boot.autoconfigure.jdbc.JndiDataSourceAutoConfiguration;
+//import org.springframework.boot.autoconfigure.jdbc.JndiDataSourceAutoConfiguration;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.transaction.annotation.Transactional;
@@ -18,7 +18,7 @@ import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest(classes = {MainApp.class, SchemaAwareNamedParameterJdbcTemplateRealDbTest.class})
 @ActiveProfiles("test")
-@EnableAutoConfiguration(exclude = JndiDataSourceAutoConfiguration.class)
+//@EnableAutoConfiguration(exclude = JndiDataSourceAutoConfiguration.class)
 @Tag("excludeFromBuild")
 public class SchemaAwareNamedParameterJdbcTemplateRealDbTest {
 

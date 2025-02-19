@@ -32,10 +32,10 @@ public class SchemaAwareNamedParameterJdbcTemplate {
             return namedParameterJdbcTemplate.queryForObject(sql, params, clazz);
         } catch (DataAccessException e) {
             throw new RuntimeException("Error setting schema or executing query", e);
-        } finally {
+        } /*finally {
             // Reset schema to default or previous state if needed
             jdbcTemplate.execute("RESET search_path");
-        }
+        }*/
     }
 
     private String sanitizeSchemaName(String schemaName) {

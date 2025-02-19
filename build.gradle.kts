@@ -38,29 +38,30 @@ dependencies {
     compileOnly("org.projectlombok:lombok")
 
     //Spring-Boot
-    implementation("org.springframework.boot:spring-boot-starter-actuator")
-    implementation("org.springframework.boot:spring-boot-starter-data-rest")
-    implementation("org.springframework.boot:spring-boot-starter-freemarker")
-    //implementation("org.springframework.boot:spring-boot-starter-security")
     implementation("org.springframework.boot:spring-boot-starter-web")
-    implementation("org.springframework.boot:spring-boot-starter-web-services")
     implementation("org.springframework.boot:spring-boot-starter-jdbc")
+    implementation("org.springframework.boot:spring-boot-starter-actuator")
+    implementation("org.springframework.boot:spring-boot-starter-freemarker")
+    implementation("org.springframework.boot:spring-boot-starter-log4j2")
+
+    configurations {
+        all {
+            exclude(group = "org.springframework.boot", module = "spring-boot-starter-logging")
+        }
+    }
 
 
-    developmentOnly("org.springframework.boot:spring-boot-devtools")
+    //developmentOnly("org.springframework.boot:spring-boot-devtools")
     //developmentOnly("org.springframework.boot:spring-boot-docker-compose")
     runtimeOnly("org.postgresql:postgresql")
 
     // Thymeleaf
-    implementation("org.thymeleaf.extras:thymeleaf-extras-springsecurity6")
+    ///implementation("org.thymeleaf.extras:thymeleaf-extras-springsecurity6")
 
-    //Spring-core
-    //Spring-web
-    //Jackson
-    //JDBC
-    providedRuntime("org.springframework.boot:spring-boot-starter-tomcat") // Удаляем встроенный Tomcat
-    providedCompile("javax.servlet:javax.servlet-api:4.0.1") // Добавляем сервлет API
-    //JPA
+    implementation("org.springframework.boot:spring-boot-starter-web")
+    implementation("org.springframework.boot:spring-boot-starter-tomcat")
+    //providedRuntime("org.springframework.boot:spring-boot-starter-tomcat") // Удаляем встроенный Tomcat
+
 
     //Test
     testImplementation("org.springframework.boot:spring-boot-starter-test") {
@@ -68,7 +69,7 @@ dependencies {
     }
     //testImplementation("org.springframework.boot:spring-boot-testcontainers")
     testImplementation("org.springframework.restdocs:spring-restdocs-mockmvc")
-    testImplementation("org.springframework.security:spring-security-test")
+    //testImplementation("org.springframework.security:spring-security-test")
     //testImplementation("org.testcontainers:junit-jupiter")
     //testImplementation("org.testcontainers:postgresql")
     testRuntimeOnly("org.junit.platform:junit-platform-launcher")
@@ -94,9 +95,6 @@ tasks.war {
     archiveFileName.set("otkassist.war") // Название WAR-файла
 }
 
-
-//tasks.withType<Test> {}
-
 tasks.test {
     useJUnitPlatform{
         excludeTags("excludeFromBuild") // Exclude tests with this tag
@@ -104,7 +102,7 @@ tasks.test {
     systemProperty("spring.profiles.active", "test")
 
 
-    //environment("DB_USERNAME", ("DB_USERNAME"))
+    //environment("DB_USERNAME", System.getenv("DB_USERNAME"))
     //environment("DB_PASSWORD", System.getenv("DB_PASSWORD"))
     outputs.dir(project.extra["snippetsDir"]!!)
 

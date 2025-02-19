@@ -8,7 +8,7 @@
     </Appenders>
     <Loggers>
         <!-- Корневой логгер -->
-        <Root level="debug">
+        <Root level="trace">
             <AppenderRef ref="Console"/>
         </Root>
 
