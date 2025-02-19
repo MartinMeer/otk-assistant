@@ -25,7 +25,7 @@ public class OstSqlBuilder implements SqlBuilder {
                 .add("WHERE")
                 .add(whereColumn)
                 .add("@>")
-                .add(":value;");
+                .add(":value");
         return sj.toString();
     }
 

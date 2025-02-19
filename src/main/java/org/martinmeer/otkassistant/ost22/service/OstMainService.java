@@ -1,6 +1,7 @@
 package org.martinmeer.otkassistant.ost22.service;
 
 import lombok.experimental.FieldNameConstants;
+import lombok.extern.slf4j.Slf4j;
 import org.martinmeer.otkassistant.core.service.MainService;
 import org.martinmeer.otkassistant.core.service.SchemaAwareNamedParameterJdbcTemplate;
 import org.martinmeer.otkassistant.ost22.model.OstInputData;
@@ -17,6 +18,7 @@ import java.util.Map;
 
 @Service
 @FieldNameConstants
+@Slf4j
 public class OstMainService implements MainService {
 
     private final OstSqlBuilder sqlBuilder;
@@ -36,7 +38,9 @@ public class OstMainService implements MainService {
     private BigDecimal minMeasuringValue;
 
 
-    public OstMainService(OstSqlBuilder sqlBuilder, OstInputData inputData, SchemaAwareNamedParameterJdbcTemplate jdbcTemplate) {
+    public OstMainService(OstSqlBuilder sqlBuilder,
+                          OstInputData inputData,
+                          SchemaAwareNamedParameterJdbcTemplate jdbcTemplate) {
         this.sqlBuilder = sqlBuilder;
         this.inputData = inputData;
         this.jdbcTemplate = jdbcTemplate;
@@ -45,9 +49,11 @@ public class OstMainService implements MainService {
     @Override
     @Transactional
     public Map<String, String> generateOutput(String page, String input) {
+        //log.info("Processing request for page: {}, input: {}", page, input);
         jdbcTemplate.setSchemaName(page);
         inputData.createInputData(input);
         generateDefinedData(jdbcTemplate);
+        //log.info("Request processed successfully");
         return outputMapper();
     }
 
@@ -113,14 +119,14 @@ public class OstMainService implements MainService {
         String validateSql = "SELECT EXISTS (SELECT 1 "
                 + subquery
                 + ");";
-        Map<String, Object> params = Collections.singletonMap(":value", nominalDimension);
+        Map<String, Object> params = Collections.singletonMap("value", nominalDimension);
         testValue = jdbcTemplate.queryWithSchema(validateSql, params, Boolean.class);
         return testValue;
     }
 
     private void fetchBaseDeviance(SchemaAwareNamedParameterJdbcTemplate jdbcTemplate) {
         try {
-            Map<String, Object> params = Collections.singletonMap(":value", nominalDimension);
+            Map<String, Object> params = Collections.singletonMap("value", nominalDimension);
             baseDeviance = jdbcTemplate.queryWithSchema(sql, params, BigDecimal.class);
         } catch (RuntimeException e) {
             throw new RuntimeException("Проверьте правильность введенных данных");

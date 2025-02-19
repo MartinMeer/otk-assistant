@@ -59,8 +59,11 @@ dependencies {
     ///implementation("org.thymeleaf.extras:thymeleaf-extras-springsecurity6")
 
     implementation("org.springframework.boot:spring-boot-starter-web")
+    /*{
+        exclude(module = "spring-boot-starter-tomcat")
+    }*/
     implementation("org.springframework.boot:spring-boot-starter-tomcat")
-    //providedRuntime("org.springframework.boot:spring-boot-starter-tomcat") // Удаляем встроенный Tomcat
+    //providedRuntime("org.springframework.boot:spring-boot-starter-tomcat")
 
 
     //Test

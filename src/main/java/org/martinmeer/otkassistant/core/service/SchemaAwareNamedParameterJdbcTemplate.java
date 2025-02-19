@@ -1,15 +1,16 @@
 package org.martinmeer.otkassistant.core.service;
 
 import lombok.Setter;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.dao.DataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.stereotype.Component;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Map;
 
 @Component
+@Slf4j
 public class SchemaAwareNamedParameterJdbcTemplate {
 
     @Setter
@@ -24,18 +25,22 @@ public class SchemaAwareNamedParameterJdbcTemplate {
         this.namedParameterJdbcTemplate = namedParameterJdbcTemplate;
     }
 
-    @Transactional
+    //@Transactional
     public <T> T queryWithSchema(String sql, Map<String, Object> params, Class<T> clazz) {
-        String sanitaizedSchemaName = sanitizeSchemaName(schemaName);
+
+        String sanitizedSchemaName = sanitizeSchemaName(schemaName);
+        //log.debug("Setting schema to: {}", sanitizedSchemaName); // Логирование выбора схемы
+        //log.debug("Executing SQL: {}", sql); // Логирование SQL-запроса
         try {
-            jdbcTemplate.execute("SET LOCAL search_path TO " + sanitaizedSchemaName);
+            //log.debug("Parameters: {}", params);
+            jdbcTemplate.execute("SET LOCAL search_path TO " + sanitizedSchemaName);
             return namedParameterJdbcTemplate.queryForObject(sql, params, clazz);
         } catch (DataAccessException e) {
+            //log.error("Error executing query in schema {}: {}", sanitizedSchemaName, e.getMessage());
             throw new RuntimeException("Error setting schema or executing query", e);
-        } /*finally {
-            // Reset schema to default or previous state if needed
+        } finally {
             jdbcTemplate.execute("RESET search_path");
-        }*/
+        }
     }
 
     private String sanitizeSchemaName(String schemaName) {

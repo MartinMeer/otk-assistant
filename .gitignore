@@ -38,3 +38,5 @@ out/
 /old.martinmeer/
 /src/main/resources/misc/testSQLQueries
 /src/main/java/org/martinmeer/otkassistant/.env
+/src/main/resources/misc/application-local.yml
+/logs/
