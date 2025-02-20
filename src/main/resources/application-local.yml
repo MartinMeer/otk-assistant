@@ -1,10 +1,9 @@
+
 spring:
-
   datasource:
-
-    url: jdbc:postgresql://176.108.248.118:5432/otk?ssl=false
-    username: otkreader
-    password: victoria
+    url: ${DATASOURCE_URL}
+    username: ${DATASOURCE_USERNAME}
+    password: ${DATASOURCE_PASSWORD}
     driver-class-name: org.postgresql.Driver
 
 management:
@@ -24,3 +23,5 @@ logging:
     org.springframework.jdbc.datasource.DataSourceTransactionManager: trace
     root: info
     org.springframework.jdbc.core: trace
+server:
+  port: 8080
