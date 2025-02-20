@@ -40,3 +40,9 @@ out/
 /src/main/java/org/martinmeer/otkassistant/.env
 /src/main/resources/misc/application-local.yml
 /logs/
+/.env
+/src/main/java/org/martinmeer/otkassistant/mthread/service/MThrdInputNormalizer.java
+/src/main/java/org/martinmeer/otkassistant/mthread/service/MThrdInputRefiner.java
+/src/main/java/org/martinmeer/otkassistant/mthread/model/MThrdNSpace.java
+/src/main/java/org/martinmeer/otkassistant/mthread/model/mThreadInputData.java
+/src/main/java/org/martinmeer/otkassistant/mthread/service/MThreadMainService.java
