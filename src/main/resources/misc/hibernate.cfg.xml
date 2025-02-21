@@ -1,0 +1,28 @@
+<!--<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-configuration PUBLIC "-//Hibernate/Hibernate Configuration DTD 3.0//EN"
+        "http://www.hibernate.org/dtd/hibernate-configuration-3.0.dtd">
+<hibernate-configuration>
+    <session-factory>-->
+        <!-- JDBC connection settings
+        <property name="connection.driver_class">org.postgresql.Driver</property>
+        <property name="connection.url">jdbc:postgresql://176.108.248.118:5432/otk</property>
+        <property name="connection.username">otkreader</property>
+        <property name="connection.password">victoria</property>
+
+        <property name="current_session_context_class">thread</property>
+-->
+        <!-- Dialect for PostgreSQL
+        <property name="dialect">org.hibernate.dialect.PostgreSQLDialect</property>
+-->
+        <!-- Show SQL statements in console
+        <property name="show_sql">true</property>
+-->
+        <!-- Update the database schema on startup -->
+        <!--<property name="hbm2ddl.auto">update</property>-->
+
+        <!-- Mapping files or annotated classes -->
+        <!--<mapping class="com.example.yourpackage.YourEntityClass"/>-->
+        <!-- Add more mapping classes as needed
+    </session-factory>
+</hibernate-configuration>
+-->

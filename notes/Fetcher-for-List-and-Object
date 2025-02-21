@@ -1,0 +1,209 @@
+Да, конечно! Вы можете добавить в `SchemaAwareNamedParameterJdbcTemplate` два метода: один для получения **одиночного объекта**, другой для **списка объектов**. Это обеспечит гибкость и безопасность типов. Давайте реализуем оба варианта.
+
+---
+
+### 1. Добавление методов в `SchemaAwareNamedParameterJdbcTemplate`
+
+Модифицируем класс, чтобы он поддерживал оба сценария:
+
+```java
+public class SchemaAwareNamedParameterJdbcTemplate {
+
+    // ... существующие поля и конструкторы ...
+
+    /**
+     * Возвращает один объект из запроса.
+     */
+    public <T> T queryForObjectWithSchema(
+        String schemaName,
+        String sql,
+        Map<String, Object> params,
+        RowMapper<T> rowMapper
+    ) {
+        try {
+            jdbcTemplate.execute("SET LOCAL search_path TO " + sanitizeSchemaName(schemaName));
+            return namedParameterJdbcTemplate.queryForObject(sql, params, rowMapper);
+        } catch (DataAccessException e) {
+            throw new RuntimeException("Error executing query for object", e);
+        }
+    }
+
+    /**
+     * Возвращает список объектов из запроса.
+     */
+    public <T> List<T> queryForListWithSchema(
+        String schemaName,
+        String sql,
+        Map<String, Object> params,
+        RowMapper<T> rowMapper
+    ) {
+        try {
+            jdbcTemplate.execute("SET LOCAL search_path TO " + sanitizeSchemaName(schemaName));
+            return namedParameterJdbcTemplate.query(sql, params, rowMapper);
+        } catch (DataAccessException e) {
+            throw new RuntimeException("Error executing query for list", e);
+        }
+    }
+
+    // ... метод sanitizeSchemaName ...
+}
+```
+
+---
+
+### 2. Адаптация `AbstractFetchedData`
+
+Теперь абстрактный класс можно параметризовать так, чтобы он работал и с одиночными объектами, и со списками, в зависимости от потребностей.
+
+#### Вариант A: Работа с одиночным объектом
+```java
+public abstract class AbstractFetchedData<T> implements DataFetcher {
+
+    protected String baseData;
+    protected T fetchedData; // Одиночный объект
+    protected String sql;
+    protected String schemaName;
+
+    private final SchemaAwareNamedParameterJdbcTemplate dbQueryTemplate;
+
+    protected AbstractFetchedData(SchemaAwareNamedParameterJdbcTemplate dbQueryTemplate, String sql) {
+        this.dbQueryTemplate = dbQueryTemplate;
+        this.sql = sql;
+    }
+
+    @Override
+    public void fetchFromDatabase() {
+        Map<String, Object> params = Collections.singletonMap("baseData", typeConverter(baseData));
+        T result = dbQueryTemplate.queryForObjectWithSchema( // Используем метод для объекта
+            schemaName,
+            sql,
+            params,
+            getObjectMapper()
+        );
+        setFetchedData(result);
+    }
+
+    protected abstract T typeConverter(String baseData);
+
+    protected abstract RowMapper<T> getObjectMapper();
+
+    // Геттер и сеттер для fetchedData
+    protected void setFetchedData(T data) {
+        this.fetchedData = data;
+    }
+
+    public T getFetchedData() {
+        return fetchedData;
+    }
+}
+```
+
+**Пример использования:**
+```java
+public class UserFetcher extends AbstractFetchedData<User> {
+    @Override
+    protected User typeConverter(String baseData) {
+        return new User(baseData); // Например, создание User из строки
+    }
+
+    @Override
+    protected RowMapper<User> getObjectMapper() {
+        return (rs, rowNum) -> new User(rs.getString("name"));
+    }
+}
+
+// Использование:
+UserFetcher fetcher = new UserFetcher(template, "SELECT * FROM users WHERE id = :baseData");
+fetcher.setBaseData("123");
+fetcher.fetchFromDatabase();
+User user = fetcher.getFetchedData(); // Одиночный объект
+```
+
+---
+
+#### Вариант B: Работа со списком объектов
+Если в некоторых сценариях нужен список, создайте отдельный абстрактный класс (например, `AbstractListFetchedData`):
+
+```java
+public abstract class AbstractListFetchedData<T> implements DataFetcher {
+
+    protected String baseData;
+    protected List<T> fetchedData; // Список объектов
+    protected String sql;
+    protected String schemaName;
+
+    private final SchemaAwareNamedParameterJdbcTemplate dbQueryTemplate;
+
+    protected AbstractListFetchedData(SchemaAwareNamedParameterJdbcTemplate dbQueryTemplate, String sql) {
+        this.dbQueryTemplate = dbQueryTemplate;
+        this.sql = sql;
+    }
+
+    @Override
+    public void fetchFromDatabase() {
+        Map<String, Object> params = Collections.singletonMap("baseData", typeConverter(baseData));
+        List<T> result = dbQueryTemplate.queryForListWithSchema( // Используем метод для списка
+            schemaName,
+            sql,
+            params,
+            getObjectMapper()
+        );
+        setFetchedData(result);
+    }
+
+    protected abstract T typeConverter(String baseData); // Возвращает параметр для запроса
+
+    protected abstract RowMapper<T> getObjectMapper();
+
+    protected void setFetchedData(List<T> data) {
+        this.fetchedData = data;
+    }
+
+    public List<T> getFetchedData() {
+        return fetchedData;
+    }
+}
+```
+
+**Пример использования:**
+```java
+public class AllUsersFetcher extends AbstractListFetchedData<User> {
+    @Override
+    protected User typeConverter(String baseData) {
+        return null; // Если параметр не нужен (например, запрос SELECT * FROM users)
+    }
+
+    @Override
+    protected RowMapper<User> getObjectMapper() {
+        return (rs, rowNum) -> new User(rs.getString("name"));
+    }
+}
+
+// Использование:
+AllUsersFetcher fetcher = new AllUsersFetcher(template, "SELECT * FROM users");
+fetcher.fetchFromDatabase();
+List<User> users = fetcher.getFetchedData(); // Список
+```
+
+---
+
+### Итоги:
+1. **Два метода в `SchemaAwareNamedParameterJdbcTemplate`**:
+   - `queryForObjectWithSchema()` — для одиночных объектов.
+   - `queryForListWithSchema()` — для списков.
+
+2. **Два абстрактных класса**:
+   - `AbstractFetchedData<T>` — для случаев, когда запрос возвращает **один объект**.
+   - `AbstractListFetchedData<T>` — для случаев, когда запрос возвращает **список**.
+
+3. **Безопасность типов**:
+   - Больше не требуется приведение типов вручную.
+   - Ошибки несоответствия типов будут пойманы на этапе компиляции.
+
+---
+
+### Когда что использовать:
+- **`AbstractFetchedData<T>`** — для запросов с `WHERE` (например, поиск по уникальному идентификатору).
+- **`AbstractListFetchedData<T>`** — для запросов, возвращающих множество строк (например, `SELECT * FROM table`).
+
+Если вы хотите объединить оба варианта в одном классе, можно добавить параметр, указывающий тип результата (например, через `enum`), но это усложнит код. Лучше разделить логику на два класса для ясности.

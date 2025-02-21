@@ -1,0 +1,243 @@
+Вы абсолютно правы! Если сайт будет нагруженным, то разделение на отдельные сервисы для каждой страницы с собственным контроллером и `DataSource` — это действительно более масштабируемый и организованный подход. Давайте рассмотрим, как этот подход может быть реализован и какие преимущества он дает.
+
+---
+
+### 1. **Архитектурный подход: Отдельный сервис для каждой страницы**
+
+#### Суть подхода:
+- Каждая страница имеет свой контроллер, который вызывает соответствующий сервис.
+- Каждый сервис работает только с одной схемой через свой `DataSource`.
+- Это позволяет полностью изолировать логику каждой страницы, минимизируя взаимодействие между компонентами.
+
+#### Пример структуры приложения:
+
+```
+com.example.app
+├── controller
+│   ├── Page1Controller.java
+│   ├── Page2Controller.java
+│   └── ...
+├── service
+│   ├── Page1Service.java
+│   ├── Page2Service.java
+│   └── ...
+├── repository
+│   ├── Page1Repository.java
+│   ├── Page2Repository.java
+│   └── ...
+└── config
+    ├── DataSourceConfig.java
+```
+
+---
+
+### 2. **Реализация**
+
+#### a) Конфигурация нескольких `DataSource` через JNDI
+
+Как уже обсуждалось ранее, в `context.xml` Tomcat определите несколько `DataSource` для разных схем:
+
+```xml
+<Context>
+    <Resource name="jdbc/page1DataSource"
+              auth="Container"
+              type="javax.sql.DataSource"
+              factory="org.apache.tomcat.jdbc.pool.DataSourceFactory"
+              driverClassName="org.postgresql.Driver"
+              url="jdbc:postgresql://localhost:5432/yourdb"
+              username="page1_user"
+              password="password_for_page1"
+              maxActive="20"
+              maxIdle="10"
+              minIdle="5"
+              initialSize="5"/>
+
+    <Resource name="jdbc/page2DataSource"
+              auth="Container"
+              type="javax.sql.DataSource"
+              factory="org.apache.tomcat.jdbc.pool.DataSourceFactory"
+              driverClassName="org.postgresql.Driver"
+              url="jdbc:postgresql://localhost:5432/yourdb"
+              username="page2_user"
+              password="password_for_page2"
+              maxActive="20"
+              maxIdle="10"
+              minIdle="5"
+              initialSize="5"/>
+</Context>
+```
+
+#### b) Настройка `DataSource` в Java-приложении
+
+В Spring-конфигурации создайте бины для каждого `DataSource`:
+
+```java
+@Configuration
+public class DataSourceConfig {
+
+    @Bean(name = "page1DataSource")
+    public DataSource page1DataSource() throws NamingException {
+        Context ctx = new InitialContext();
+        return (DataSource) ctx.lookup("java:comp/env/jdbc/page1DataSource");
+    }
+
+    @Bean(name = "page2DataSource")
+    public DataSource page2DataSource() throws NamingException {
+        Context ctx = new InitialContext();
+        return (DataSource) ctx.lookup("java:comp/env/jdbc/page2DataSource");
+    }
+}
+```
+
+#### c) Создание репозиториев для каждой схемы
+
+Каждый репозиторий будет использовать свой `DataSource`. Например:
+
+```java
+@Repository
+public class Page1Repository {
+
+    private final JdbcTemplate jdbcTemplate;
+
+    @Autowired
+    public Page1Repository(@Qualifier("page1DataSource") DataSource dataSource) {
+        this.jdbcTemplate = new JdbcTemplate(dataSource);
+    }
+
+    public List<User> getUsers() {
+        String sql = "SELECT * FROM users";
+        return jdbcTemplate.query(sql, userRowMapper);
+    }
+}
+
+@Repository
+public class Page2Repository {
+
+    private final JdbcTemplate jdbcTemplate;
+
+    @Autowired
+    public Page2Repository(@Qualifier("page2DataSource") DataSource dataSource) {
+        this.jdbcTemplate = new JdbcTemplate(dataSource);
+    }
+
+    public List<Order> getOrders() {
+        String sql = "SELECT * FROM orders";
+        return jdbcTemplate.query(sql, orderRowMapper);
+    }
+}
+```
+
+#### d) Создание сервисов для каждой страницы
+
+Каждый сервис будет использовать соответствующий репозиторий:
+
+```java
+@Service
+public class Page1Service {
+
+    private final Page1Repository page1Repository;
+
+    @Autowired
+    public Page1Service(Page1Repository page1Repository) {
+        this.page1Repository = page1Repository;
+    }
+
+    public List<User> fetchUsers() {
+        return page1Repository.getUsers();
+    }
+}
+
+@Service
+public class Page2Service {
+
+    private final Page2Repository page2Repository;
+
+    @Autowired
+    public Page2Service(Page2Repository page2Repository) {
+        this.page2Repository = page2Repository;
+    }
+
+    public List<Order> fetchOrders() {
+        return page2Repository.getOrders();
+    }
+}
+```
+
+#### e) Создание контроллеров для каждой страницы
+
+Каждый контроллер будет работать с соответствующим сервисом:
+
+```java
+@RestController
+@RequestMapping("/page1")
+public class Page1Controller {
+
+    private final Page1Service page1Service;
+
+    @Autowired
+    public Page1Controller(Page1Service page1Service) {
+        this.page1Service = page1Service;
+    }
+
+    @GetMapping("/users")
+    public ResponseEntity<List<User>> getUsers() {
+        List<User> users = page1Service.fetchUsers();
+        return ResponseEntity.ok(users);
+    }
+}
+
+@RestController
+@RequestMapping("/page2")
+public class Page2Controller {
+
+    private final Page2Service page2Service;
+
+    @Autowired
+    public Page2Controller(Page2Service page2Service) {
+        this.page2Service = page2Service;
+    }
+
+    @GetMapping("/orders")
+    public ResponseEntity<List<Order>> getOrders() {
+        List<Order> orders = page2Service.fetchOrders();
+        return ResponseEntity.ok(orders);
+    }
+}
+```
+
+---
+
+### 3. **Преимущества такого подхода**
+
+1. **Изолированность:** Логика каждой страницы полностью изолирована, что упрощает поддержку и тестирование.
+2. **Масштабируемость:** Можно легко добавлять новые страницы без изменения существующего кода.
+3. **Безопасность:** Каждый `DataSource` использует своего пользователя с ограниченными правами доступа к конкретной схеме.
+4. **Управляемость:** Легко контролировать производительность и нагрузку на каждую схему, так как они имеют свои пулы соединений.
+
+---
+
+### 4. **Недостатки**
+
+1. **Сложность конфигурации:** Требуется больше времени на настройку `DataSource`, пользователей PostgreSQL и конфигурацию Tomcat.
+2. **Больше соединений:** Каждый `DataSource` создает свой пул соединений, что может увеличить нагрузку на базу данных.
+3. **Дублирование кода:** Если логика для разных страниц похожа, может возникнуть дублирование кода.
+
+---
+
+### 5. **Когда этот подход наиболее эффективен?**
+
+- **Высокая нагрузка:** Когда каждая страница получает много запросов, использование отдельных пулов соединений повышает производительность.
+- **Строгая изоляция:** Когда важно обеспечить полную изоляцию данных между страницами.
+- **Множество схем:** Когда количество схем велико, и каждый набор данных требует уникальной обработки.
+
+---
+
+### 6. **Альтернативное решение для уменьшения сложности**
+
+Если вы хотите сохранить преимущества этого подхода, но избежать сложности конфигурации, можно использовать **динамический выбор схемы** через `SET search_path` внутри одного `DataSource`. Однако это менее безопасно и менее масштабируемо, особенно при высокой нагрузке.
+
+---
+
+### Итог
+
+Отдельные сервисы для каждой страницы с собственным контроллером и `DataSource` — это мощный подход, особенно для высоконагруженных приложений. Он обеспечивает максимальную изоляцию, безопасность и управляемость, но требует большего внимания к конфигурации. Если нагрузка невысока или схем немного, можно рассмотреть более простые решения, такие как динамический выбор схемы.

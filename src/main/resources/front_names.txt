@@ -1,0 +1,35 @@
+/*
+
+const response = await postData('/api/process', requestData);
+
+
+padeId=ost22
+const page = 'ost22';
+    const inputString = `${type}:${size}`;
+    const inputData = { pageId, inputString };
+
+const type = document.getElementById('detail_type').value.trim(); // Значение из выпадающего списка
+const size = document.getElementById('nominal_dimension').value.trim();
+
+    document.getElementById('upper_deviance').value = response.deviation_values || '';
+    document.getElementById('lower_deviance').value = response.deviation_values || '';
+    document.getElementById('min_mes_value').value = response.min_mes_value  || '';
+    document.getElementById('max_mes_value').value = response.max_mes_value  || '';
+
+
+
+/*
+pageId = 'thread_m';
+value = response.pitch_diameter || '';
+        value = response.es_d2 || '';
+        value = response.ei_d2 || '';
+        value = response.max_mes_value_d2 || '';
+       value = response.min_mes_value_d2 || '';
+
+
+        value = response.nom_diameter || '';
+        value = response.es_d || '';
+        value = response.ei_d || '';
+        value = response.max_mes_value_d || '';
+        value = response.min_mes_value_d || '';
+*/
