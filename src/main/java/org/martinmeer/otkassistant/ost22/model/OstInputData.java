@@ -8,9 +8,6 @@ import org.springframework.stereotype.Component;
 @Getter
 public class OstInputData extends AbstractInputData {
 
-    protected String TEST;
-
-
     @Override
     protected String normalize(String input) {
         return input.toLowerCase().trim();

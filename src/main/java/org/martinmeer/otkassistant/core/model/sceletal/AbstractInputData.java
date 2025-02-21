@@ -1,8 +1,6 @@
 package org.martinmeer.otkassistant.core.model.sceletal;
 
 import lombok.Getter;
-import org.springframework.stereotype.Component;
-
 
 @Getter
 public abstract class AbstractInputData {

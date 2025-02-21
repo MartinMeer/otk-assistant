@@ -7,6 +7,7 @@ plugins {
     //checkstyle
     id("com.github.ben-manes.versions") version "0.51.0"
     //id("nu.studer.dotenv") version "3.0.0"
+    id("checkstyle")
 }
 
 group = "org.martinmeer"
@@ -89,6 +90,7 @@ dependencies {
         }
     }
     implementation("io.github.cdimascio:dotenv-java:3.1.0")
+    implementation("com.puppycrawl.tools:checkstyle:10.21.2")
 
 }
 

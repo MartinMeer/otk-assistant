@@ -5,7 +5,12 @@ import lombok.Setter;
 import org.martinmeer.otkassistant.core.service.MainServiceFactory;
 import org.martinmeer.otkassistant.core.service.MainService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import java.util.Map;
 
@@ -13,6 +18,7 @@ import java.util.Map;
 @RestController // Parse JSON for response automatically
 @RequestMapping("/api")
 @Setter
+
 public class ApiController {
 
     private MainServiceFactory mainServiceFactory;
@@ -31,7 +37,7 @@ public class ApiController {
         String page = request.getInputData(); // "ost22"
         String input = request.getInputString(); // "exampleType:10.00"
 
-        /**Call main service for separate page*/
+
         MainService mainService = mainServiceFactory.getService(page);
 
         if (mainService == null) {

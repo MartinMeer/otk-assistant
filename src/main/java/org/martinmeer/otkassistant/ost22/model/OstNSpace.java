@@ -1,10 +1,11 @@
+/*
 package org.martinmeer.otkassistant.ost22.model;
 
 import java.util.Arrays;
 
-/**Contains field names from frontend, MUST be compared to*/
+//Contains field names from frontend, MUST be compared to/
+
 public enum OstNSpace {
-    
     //From PUT request
     NOM_DIMENSION("nom_dimension"),
     TYPE_OF_DETAIL(""),
@@ -27,7 +28,8 @@ public enum OstNSpace {
         this.substr = substr;
     }
 
-/**This method returns constant name by string value*/
+//This method returns constant name by string value
+
     public static OstNSpace valueFromEnum(String substr) {
         return Arrays.stream(OstNSpace.values())
                 .filter(e -> e.substr.equals(substr))
@@ -43,3 +45,4 @@ public enum OstNSpace {
 
     private final String substr;
 }
+*/

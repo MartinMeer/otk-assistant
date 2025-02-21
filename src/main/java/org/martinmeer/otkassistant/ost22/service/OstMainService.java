@@ -58,12 +58,12 @@ public class OstMainService implements MainService {
     }
 
 
-    private void generateDefinedData(SchemaAwareNamedParameterJdbcTemplate jdbcTemplate) {
+    private void generateDefinedData(SchemaAwareNamedParameterJdbcTemplate template) {
         setNominalDimension(inputData.getInputDimension());
         setDimensionDefinition();
         generateSql();
-        if (validate(jdbcTemplate)) {
-            fetchBaseDeviance(jdbcTemplate);
+        if (validate(template)) {
+            fetchBaseDeviance(template);
             setDeviances();
         } else {
             throw new RuntimeException("Проверьте правильность введенных данных");
@@ -111,7 +111,7 @@ public class OstMainService implements MainService {
         this.sql = sqlBuilder.buildSelectSql();
     }
 
-    private boolean validate(SchemaAwareNamedParameterJdbcTemplate jdbcTemplate) {
+    private boolean validate(SchemaAwareNamedParameterJdbcTemplate template) {
         Boolean testValue;
         //select exist (select 1 <<from ost22.def_deviances where nom_dim_range @> 20.0>>);
 
@@ -120,14 +120,14 @@ public class OstMainService implements MainService {
                 + subquery
                 + ");";
         Map<String, Object> params = Collections.singletonMap("value", nominalDimension);
-        testValue = jdbcTemplate.queryWithSchema(validateSql, params, Boolean.class);
+        testValue = template.queryWithSchema(validateSql, params, Boolean.class);
         return testValue;
     }
 
-    private void fetchBaseDeviance(SchemaAwareNamedParameterJdbcTemplate jdbcTemplate) {
+    private void fetchBaseDeviance(SchemaAwareNamedParameterJdbcTemplate template) {
         try {
             Map<String, Object> params = Collections.singletonMap("value", nominalDimension);
-            baseDeviance = jdbcTemplate.queryWithSchema(sql, params, BigDecimal.class);
+            baseDeviance = template.queryWithSchema(sql, params, BigDecimal.class);
         } catch (RuntimeException e) {
             throw new RuntimeException("Проверьте правильность введенных данных");
         }

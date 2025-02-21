@@ -43,10 +43,10 @@ public class SchemaAwareNamedParameterJdbcTemplate {
         }
     }
 
-    private String sanitizeSchemaName(String schemaName) {
-        if (!schemaName.matches("^[a-zA-Z0-9_]+$")) {
-            throw new IllegalArgumentException("Invalid schema name: " + schemaName);
+    private String sanitizeSchemaName(String nameForSanitize) {
+        if (!nameForSanitize.matches("^[a-zA-Z0-9_]+$")) {
+            throw new IllegalArgumentException("Invalid schema name: " + nameForSanitize);
         }
-        return schemaName;
+        return nameForSanitize;
     }
 }

@@ -13,4 +13,4 @@ doc:
 mkTest:
 	./gradlew test
 	./gradlew checkstyleMain
-	./gradlew jacocoTestReport
+	#./gradlew jacocoTestReport
