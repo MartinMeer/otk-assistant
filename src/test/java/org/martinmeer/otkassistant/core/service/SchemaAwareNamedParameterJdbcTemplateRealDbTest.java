@@ -1,6 +1,5 @@
 package org.martinmeer.otkassistant.core.service;
 
-
 import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 import org.martinmeer.otkassistant.MainApp;
@@ -13,7 +12,11 @@ import org.springframework.transaction.annotation.Transactional;
 import java.math.BigDecimal;
 import java.util.Map;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+
 
 @SpringBootTest(classes = {MainApp.class, SchemaAwareNamedParameterJdbcTemplateRealDbTest.class})
 @ActiveProfiles("test")
@@ -49,7 +52,6 @@ public class SchemaAwareNamedParameterJdbcTemplateRealDbTest {
     void testInvalidSchemaName() {
         // Arrange
         schemaAwareJdbc.setSchemaName("invalid@schema!");
-        ;
         String sql = "SELECT deviance FROM undef_deviances WHERE dim_range @> :id";
 
         // Act & Assert
@@ -59,6 +61,7 @@ public class SchemaAwareNamedParameterJdbcTemplateRealDbTest {
                     BigDecimal.class);
         }, "Invalid schema name should throw IllegalArgumentException");
 
-        assertTrue(exception.getMessage().contains("Invalid schema name"), "Exception message should indicate invalid schema name");
+        assertTrue(exception.getMessage().contains("Invalid schema name"),
+                "Exception message should indicate invalid schema name");
     }
 }

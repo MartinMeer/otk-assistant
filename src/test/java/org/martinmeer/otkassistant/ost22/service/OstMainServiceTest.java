@@ -15,9 +15,18 @@ import java.lang.reflect.Method;
 import java.math.BigDecimal;
 import java.util.Map;
 
-import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.ArgumentMatchers.*;
-import static org.mockito.Mockito.*;
+import static org.junit.jupiter.api.Assertions.assertAll;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.mockito.ArgumentMatchers.anyMap;
+import static org.mockito.ArgumentMatchers.anyString;
+import static org.mockito.ArgumentMatchers.contains;
+import static org.mockito.ArgumentMatchers.eq;
+import static org.mockito.Mockito.lenient;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
+
 
 @ExtendWith(MockitoExtension.class)
 class OstMainServiceTest {
@@ -45,7 +54,9 @@ class OstMainServiceTest {
     @BeforeEach
     void setUp() throws NoSuchMethodException, NoSuchFieldException {
         // Access private method via reflection
-        method = OstMainService.class.getDeclaredMethod("generateDefinedData", SchemaAwareNamedParameterJdbcTemplate.class);
+        method = OstMainService.class.getDeclaredMethod(
+                "generateDefinedData",
+                SchemaAwareNamedParameterJdbcTemplate.class);
         method.setAccessible(true);
         nominalDimensionField = getField(OstMainService.class, "nominalDimension");
         dimensionDefinitionField = getField(OstMainService.class, "dimensionDefinition");
@@ -57,12 +68,20 @@ class OstMainServiceTest {
     }
 
     @Test
-    void generateDefinedData_ValidHoleDimension_SetsCorrectValues() throws Exception {
+    void generateDefinedDataValidHoleDimensionSetsCorrectValues() throws Exception {
         // Arrange
-        when(inputData.getDimensionDefinition()).thenReturn("hole");
-        when(sqlBuilder.buildSelectSql()).thenReturn("SELECT hole FROM def_deviances WHERE nom_dim_range @> :value");
-        when(jdbcTemplate.queryWithSchema(anyString(), anyMap(), eq(Boolean.class))).thenReturn(true);
-        when(jdbcTemplate.queryWithSchema(anyString(), anyMap(), eq(BigDecimal.class))).thenReturn(new BigDecimal("0.05"));
+        when(inputData.getDimensionDefinition())
+                .thenReturn("hole");
+        when(sqlBuilder.buildSelectSql())
+                .thenReturn("SELECT hole FROM def_deviances WHERE nom_dim_range @> :value");
+        when(jdbcTemplate.queryWithSchema(anyString(),
+                anyMap(),
+                eq(Boolean.class)))
+                .thenReturn(true);
+        when(jdbcTemplate.queryWithSchema(anyString(),
+                anyMap(),
+                eq(BigDecimal.class)))
+                .thenReturn(new BigDecimal("0.05"));
 
         // Act
         method.invoke(ostMainService, jdbcTemplate);
@@ -107,25 +126,36 @@ class OstMainServiceTest {
     }
 
     @Test
-    void generateDefinedData_InvalidDimension_ThrowsException() throws Exception {
+    void generateDefinedDataInvalidDimensionThrowsException() throws Exception {
         // Arrange
         when(inputData.getDimensionDefinition()).thenReturn("invalid_type");
 
         // Act & Assert
-        Exception exception = assertThrows(Exception.class, () -> method.invoke(ostMainService, jdbcTemplate));
-        assertTrue(exception.getCause().getMessage().contains("Проверьте правильность типа введенных данных"));
+        Exception exception = assertThrows(Exception.class,
+                () -> method.invoke(ostMainService, jdbcTemplate));
+        assertTrue(exception
+                .getCause()
+                .getMessage()
+                .contains("Проверьте правильность типа введенных данных"));
     }
 
     @Test
-    void generateDefinedData_ValidationFailed_ThrowsException() throws Exception {
+    void generateDefinedDataValidationFailedThrowsException() throws Exception {
         // Arrange
         when(inputData.getDimensionDefinition()).thenReturn("hole");
-        when(sqlBuilder.buildSelectSql()).thenReturn("SELECT hole FROM def_deviances WHERE nom_dim_range @> :value");
-        when(jdbcTemplate.queryWithSchema(anyString(), anyMap(), eq(Boolean.class))).thenReturn(false);
+        when(sqlBuilder.buildSelectSql())
+                .thenReturn("SELECT hole FROM def_deviances WHERE nom_dim_range @> :value");
+        when(jdbcTemplate.queryWithSchema(anyString(),
+                anyMap(),
+                eq(Boolean.class))).thenReturn(false);
 
         // Act & Assert
-        Exception exception = assertThrows(Exception.class, () -> method.invoke(ostMainService, jdbcTemplate));
-        assertTrue(exception.getCause().getMessage().contains("Проверьте правильность введенных данных"));
+        Exception exception = assertThrows(Exception.class,
+                () -> method.invoke(ostMainService, jdbcTemplate));
+        assertTrue(exception
+                .getCause()
+                .getMessage()
+                .contains("Проверьте правильность введенных данных"));
     }
 
     private static Field getField(Class<?> clazz, String fieldName) throws NoSuchFieldException {
@@ -135,7 +165,7 @@ class OstMainServiceTest {
     }
 
     @Test
-    void outputMapper_ReturnsCorrectValues() throws IllegalAccessException {
+    void outputMapperReturnsCorrectValues() throws IllegalAccessException {
         // Arrange: Set required fields using reflection
         nominalDimensionField.set(ostMainService, new BigDecimal("20.0"));
         upperDevianceField.set(ostMainService, new BigDecimal("0.05"));

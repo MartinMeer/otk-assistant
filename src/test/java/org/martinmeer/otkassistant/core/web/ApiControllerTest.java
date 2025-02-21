@@ -41,7 +41,7 @@ class ApiControllerTest {
     }
 
     @Test
-    void processRequest_ValidInput_ReturnsServiceOutput() throws Exception {
+    void processRequestValidInput() throws Exception {
         when(mainServiceFactory.getService("ost22")).thenReturn(mainService);
         when(mainService.generateOutput("ost22", "type:10.00"))
                 .thenReturn(Map.of("result", "success"));
@@ -54,7 +54,7 @@ class ApiControllerTest {
     }
 
     @Test
-    void processRequest_UnknownPageId_ThrowsException() throws Exception {
+    void processRequestUnknownPageIdThrowsException() throws Exception {
         // 1. Настраиваем мок фабрики на возврат null для неизвестного pageId
         String unknownPageId = "unknownPage";
         when(mainServiceFactory.getService(unknownPageId)).thenReturn(null);
