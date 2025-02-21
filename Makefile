@@ -1,6 +1,6 @@
 .PHONY: test, build
-run-dist:
-	./build/install/app/bin/app
+#run-dist:
+#	./build/install/app/bin/app
 mkBuild:
 	./gradlew clean
 	./gradlew build
