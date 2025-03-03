@@ -4,6 +4,7 @@ import lombok.experimental.FieldNameConstants;
 import lombok.extern.slf4j.Slf4j;
 import org.martinmeer.otkassistant.core.service.MainService;
 import org.martinmeer.otkassistant.core.service.SchemaAwareNamedParameterJdbcTemplate;
+import org.martinmeer.otkassistant.core.utils.DecimalFormatter;
 import org.martinmeer.otkassistant.ost22.model.OstInputData;
 import org.martinmeer.otkassistant.ost22.model.OstSqlBuilder;
 import org.martinmeer.otkassistant.ost22.web.InvalidScaleException;
@@ -71,21 +72,7 @@ public class OstMainService implements MainService {
     }
 
     void setNominalDimension(String baseDimension) {
-        BigDecimal bigDecimal = new BigDecimal(baseDimension);
-        // Проверяем, является ли число целым (дробная часть = 0)
-        boolean isInteger = bigDecimal.compareTo(bigDecimal.setScale(0, RoundingMode.DOWN)) == 0;
-
-        if (isInteger) {
-            // Добавляем .0 для целых чисел
-            this.nominalDimension = bigDecimal.setScale(1, RoundingMode.UNNECESSARY);
-        }
-        if (bigDecimal.scale() > 3) {
-            throw new InvalidScaleException(
-                    "Число должно содержать не более 3 знаков после точки. Введено: "
-                            + baseDimension);
-        }
-        // Оставляем исходный масштаб для дробных
-        this.nominalDimension = bigDecimal;
+        this.nominalDimension = DecimalFormatter.scaleDecimal(baseDimension);
     }
 
     private void setDimensionDefinition() {
@@ -129,7 +116,7 @@ public class OstMainService implements MainService {
             Map<String, Object> params = Collections.singletonMap("value", nominalDimension);
             baseDeviance = template.queryWithSchema(sql, params, BigDecimal.class);
         } catch (RuntimeException e) {
-            throw new RuntimeException("Проверьте правильность введенных данных");
+            throw new RuntimeException("Проверьте правильность введённых данных");
         }
     }
 
@@ -151,15 +138,15 @@ public class OstMainService implements MainService {
         }
     }
 
-
-    BigDecimal calculateMeasuringValues(BigDecimal dimension, BigDecimal deviance) {
+    private BigDecimal calculateMeasuringValues(BigDecimal dimension, BigDecimal deviance) {
         return dimension.add(deviance);
     }
 
-    Map<String, String> outputMapper() {
+    private Map<String, String> outputMapper() {
         Map<String, String> output = new HashMap<>();
         maxMeasuringValue = calculateMeasuringValues(nominalDimension, upperDeviance);
         minMeasuringValue = calculateMeasuringValues(nominalDimension, lowerDeviance);
+
 
         output.put("upper_deviance", upperDeviance.toString());
         output.put("lower_deviance", lowerDeviance.toString());
