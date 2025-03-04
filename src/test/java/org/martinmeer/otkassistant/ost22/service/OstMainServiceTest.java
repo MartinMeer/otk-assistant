@@ -11,8 +11,10 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.lang.reflect.Field;
+import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.math.BigDecimal;
+import java.util.HashMap;
 import java.util.Map;
 
 import static org.junit.jupiter.api.Assertions.assertAll;
@@ -43,7 +45,7 @@ class OstMainServiceTest {
     @InjectMocks
     private OstMainService ostMainService;
 
-    private static Method method;
+    private static Map<String, Method> methods;
     //private static List<Field> fieldsList;
 
     private static Field nominalDimensionField;
@@ -53,18 +55,21 @@ class OstMainServiceTest {
 
     @BeforeEach
     void setUp() throws NoSuchMethodException, NoSuchFieldException {
-        // Access private method via reflection
-        method = OstMainService.class.getDeclaredMethod(
+        // Access private fields and methods via reflection
+        methods = new HashMap<>();
+        methods.put("generateDefinedData", OstMainService.class.getDeclaredMethod(
                 "generateDefinedData",
-                SchemaAwareNamedParameterJdbcTemplate.class);
-        method.setAccessible(true);
+                SchemaAwareNamedParameterJdbcTemplate.class));
+        methods.put("outputMapper", OstMainService.class.getDeclaredMethod("outputMapper"));
+        methods.values().forEach(v -> v.setAccessible(true));
+
         nominalDimensionField = getField(OstMainService.class, "nominalDimension");
         dimensionDefinitionField = getField(OstMainService.class, "dimensionDefinition");
         upperDevianceField = getField(OstMainService.class, "upperDeviance");
         lowerDevianceField = getField(OstMainService.class, "lowerDeviance");
+
         String inputDimension = "20.0";
         lenient().when(inputData.getInputDimension()).thenReturn(inputDimension);
-
     }
 
     @Test
@@ -84,7 +89,7 @@ class OstMainServiceTest {
                 .thenReturn(new BigDecimal("0.05"));
 
         // Act
-        method.invoke(ostMainService, jdbcTemplate);
+        methods.get("generateDefinedData").invoke(ostMainService, jdbcTemplate);
 
         // Assert
         // Verify field values
@@ -132,7 +137,7 @@ class OstMainServiceTest {
 
         // Act & Assert
         Exception exception = assertThrows(Exception.class,
-                () -> method.invoke(ostMainService, jdbcTemplate));
+                () ->  methods.get("generateDefinedData").invoke(ostMainService, jdbcTemplate));
         assertTrue(exception
                 .getCause()
                 .getMessage()
@@ -151,7 +156,7 @@ class OstMainServiceTest {
 
         // Act & Assert
         Exception exception = assertThrows(Exception.class,
-                () -> method.invoke(ostMainService, jdbcTemplate));
+                () -> methods.get("generateDefinedData").invoke(ostMainService, jdbcTemplate));
         assertTrue(exception
                 .getCause()
                 .getMessage()
@@ -165,14 +170,15 @@ class OstMainServiceTest {
     }
 
     @Test
-    void outputMapperReturnsCorrectValues() throws IllegalAccessException {
+    void outputMapperReturnsCorrectValues() throws IllegalAccessException, InvocationTargetException {
         // Arrange: Set required fields using reflection
         nominalDimensionField.set(ostMainService, new BigDecimal("20.0"));
         upperDevianceField.set(ostMainService, new BigDecimal("0.05"));
         lowerDevianceField.set(ostMainService, new BigDecimal("-0.05"));
 
 // Act
-        Map<String, String> result = ostMainService.outputMapper();
+
+        Map<String, String> result = (Map<String, String>) methods.get("outputMapper").invoke(ostMainService);
 
         // Assert
         assertAll(
