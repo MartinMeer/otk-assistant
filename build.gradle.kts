@@ -90,7 +90,7 @@ dependencies {
         }
     }
     implementation("io.github.cdimascio:dotenv-java:3.1.0")
-    implementation("com.puppycrawl.tools:checkstyle:10.21.2")
+    implementation("com.puppycrawl.tools:checkstyle:10.21.4")
 
 }
 
