@@ -3,7 +3,7 @@ plugins {
     //war
     id("org.springframework.boot") version "3.4.1"
     id("io.spring.dependency-management") version "1.1.7"
-    id("org.asciidoctor.jvm.convert") version "3.3.2"
+    id("org.asciidoctor.jvm.convert") version "4.0.4"
     //checkstyle
     id("com.github.ben-manes.versions") version "0.51.0"
     //id("nu.studer.dotenv") version "3.0.0"
