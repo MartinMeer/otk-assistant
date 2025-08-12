@@ -2,7 +2,6 @@ plugins {
     java
     //war
     id("org.springframework.boot") version "3.4.1"
-    id("io.spring.dependency-management") version "1.1.7"
     id("org.asciidoctor.jvm.convert") version "3.3.2"
     //checkstyle
     id("com.github.ben-manes.versions") version "0.51.0"
@@ -23,6 +22,9 @@ configurations {
     compileOnly {
         extendsFrom(configurations.annotationProcessor.get())
     }
+    all {
+        exclude(group = "org.springframework.boot", module = "spring-boot-starter-logging")
+    }
 }
 
 
@@ -31,10 +33,14 @@ repositories {
 }
 
 extra["snippetsDir"] = file("build/generated-snippets")
-
-val mockitoAgent = configurations.create("mockitoAgent")
 dependencies {
+    // Spring Boot BOM
+    implementation(platform("org.springframework.boot:spring-boot-dependencies:3.4.1"))
+    annotationProcessor(platform("org.springframework.boot:spring-boot-dependencies:3.4.1"))
+    testImplementation(platform("org.springframework.boot:spring-boot-dependencies:3.4.1"))
+
     annotationProcessor("org.springframework.boot:spring-boot-configuration-processor")
+    implementation("org.projectlombok:lombok:1.18.38")
     annotationProcessor("org.projectlombok:lombok")
     compileOnly("org.projectlombok:lombok")
 
@@ -43,13 +49,6 @@ dependencies {
     implementation("org.springframework.boot:spring-boot-starter-jdbc")
     implementation("org.springframework.boot:spring-boot-starter-actuator")
     implementation("org.springframework.boot:spring-boot-starter-freemarker")
-    implementation("org.springframework.boot:spring-boot-starter-log4j2")
-
-    configurations {
-        all {
-            exclude(group = "org.springframework.boot", module = "spring-boot-starter-logging")
-        }
-    }
 
 
     //developmentOnly("org.springframework.boot:spring-boot-devtools")
@@ -59,7 +58,6 @@ dependencies {
     // Thymeleaf
     ///implementation("org.thymeleaf.extras:thymeleaf-extras-springsecurity6")
 
-    implementation("org.springframework.boot:spring-boot-starter-web")
     /*{
         exclude(module = "spring-boot-starter-tomcat")
     }*/
@@ -79,18 +77,12 @@ dependencies {
     testRuntimeOnly("org.junit.platform:junit-platform-launcher")
 
     testImplementation(libs.mockito)
-    mockitoAgent(libs.mockito) { isTransitive = false }
+    testRuntimeOnly("net.bytebuddy:byte-buddy-agent:1.14.18")
 
 
     //Logging
     implementation("org.springframework.boot:spring-boot-starter-log4j2")
-    configurations {
-        all {
-            exclude(group = "org.springframework.boot", module = "spring-boot-starter-logging")
-        }
-    }
     implementation("io.github.cdimascio:dotenv-java:3.1.0")
-    implementation("com.puppycrawl.tools:checkstyle:10.21.2")
 
 }
 
@@ -110,9 +102,6 @@ tasks.test {
     //environment("DB_USERNAME", System.getenv("DB_USERNAME"))
     //environment("DB_PASSWORD", System.getenv("DB_PASSWORD"))
     outputs.dir(project.extra["snippetsDir"]!!)
-
-    jvmArgs("-javaagent:${mockitoAgent.asPath}")
-
 }
 
 tasks.asciidoctor {

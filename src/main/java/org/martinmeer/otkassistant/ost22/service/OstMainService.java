@@ -7,12 +7,10 @@ import org.martinmeer.otkassistant.core.service.SchemaAwareNamedParameterJdbcTem
 import org.martinmeer.otkassistant.core.utils.DecimalFormatter;
 import org.martinmeer.otkassistant.ost22.model.OstInputData;
 import org.martinmeer.otkassistant.ost22.model.OstSqlBuilder;
-import org.martinmeer.otkassistant.ost22.web.InvalidScaleException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
-import java.math.RoundingMode;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;

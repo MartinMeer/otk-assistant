@@ -6,10 +6,16 @@ import java.math.BigDecimal;
 import java.math.RoundingMode;
 
 public class DecimalFormatter {
-/**This utility method prepares a number for SQL queries when searching for the numrange type is required.
- * The method converts String into BigDecimal.
- * If the fractional part of number is absent, it adds a scale of 1 (10 -> 10.0),
- * otherwise it returns BigDecimal in its original scale (constraint: scale of 3).*/
+    /**
+     * Prepares a decimal value for SQL numrange queries.
+     * Converts the provided string to {@link BigDecimal}. If the value has no fractional
+     * part, the method sets scale to 1 (e.g., 10 becomes 10.0). If the scale exceeds 3,
+     * an {@link InvalidScaleException} is thrown.
+     *
+     * @param dimension input decimal as a string
+     * @return normalized {@link BigDecimal}: scale 1 for integers, otherwise original scale (max 3)
+     * @throws InvalidScaleException when the fractional part contains more than 3 digits
+     */
     public static BigDecimal scaleDecimal(String dimension) {
         BigDecimal bigDecimal = new BigDecimal(dimension);
         boolean isInteger = bigDecimal.compareTo(bigDecimal.setScale(0, RoundingMode.DOWN)) == 0;
