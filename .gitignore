@@ -26,15 +26,7 @@ out/
 !**/src/main/**/out/
 !**/src/test/**/out/
 
-### NetBeans ###
-/nbproject/private/
-/nbbuild/
-/dist/
-/nbdist/
-/.nb-gradle/
 
-### VS Code ###
-.vscode/
 /old.martinmeer/
 /src/main/resources/misc/testSQLQueries
 /src/main/java/org/martinmeer/otkassistant/.env
@@ -47,3 +39,11 @@ out/
 /src/main/java/org/martinmeer/otkassistant/mthread/model/mThreadInputData.java
 /src/main/java/org/martinmeer/otkassistant/mthread/service/MThreadMainService.java
 /src/main/resources/.env
+ # DB-loader build artifacts (ignore these in ALL branches)
+/db-loader/target/
+/db-loader/*.jar
+/db-loader/.idea/
+/db-loader/*.iml
+# DB-loader config files with sensitive data
+/db-loader/database.properties
+/db-loader/.env
