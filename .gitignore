@@ -47,3 +47,4 @@ out/
 # DB-loader config files with sensitive data
 /db-loader/database.properties
 /db-loader/.env
+/db-loader/src/main/resources/database.properties

@@ -1,18 +1,27 @@
 package org.martinmeer;
 
-//TIP To <b>Run</b> code, press <shortcut actionId="Run"/> or
-// click the <icon src="AllIcons.Actions.Execute"/> icon in the gutter.
+import org.martinmeer.utils.CSVProcessor;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import java.io.File;
+import java.util.List;
+import java.util.regex.Pattern;
+
+/**
+ * Main class for the DB Loader application
+ */
 public class DbLoader {
+    private static final Logger logger = LoggerFactory.getLogger(DbLoader.class);
+
     public static void main(String[] args) {
-        //TIP Press <shortcut actionId="ShowIntentionActions"/> with your caret at the highlighted text
-        // to see how IntelliJ IDEA suggests fixing it.
-        System.out.printf("Hello and welcome!");
-
-        for (int i = 1; i <= 5; i++) {
-            //TIP Press <shortcut actionId="Debug"/> to start debugging your code. We have set one <icon src="AllIcons.Debugger.Db_set_breakpoint"/> breakpoint
-            // for you, but you can always add more by pressing <shortcut actionId="ToggleLineBreakpoint"/>.
-            System.out.println("i = " + i);
-        }
-
+        int payload = 10;
+        File file = new File("");
+        Pattern pattern = Pattern.compile("");
+        List<Table> loadData = CSVProcessor.processCSV(file, pattern, payload);
+        SQLExecutor.execute(loadData);
     }
+
+
+
 }
