@@ -1,6 +1,5 @@
 package org.martinmeer.utils;
 
-import org.martinmeer.DatabaseConnection;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -139,7 +138,7 @@ public class DatabaseDiagnosticExample {
     }
     
     static void testSpecificTable() {
-        System.out.println("\n--- Step 4: Specific Table Test ---");
+        System.out.println("\n--- Step 4: Specific ElementTypeTable Test ---");
         
         try (Connection conn = DatabaseConnection.getConnection()) {
             
@@ -154,7 +153,7 @@ public class DatabaseDiagnosticExample {
                     System.out.println("✓ 'esdp.element_type' table exists");
                     
                     // Get table structure
-                    System.out.println("\nTable structure:");
+                    System.out.println("\nElementTypeTable structure:");
                     try (ResultSet columns = stmt.executeQuery(
                          "SELECT column_name, data_type, is_nullable " +
                          "FROM information_schema.columns " +
@@ -187,7 +186,7 @@ public class DatabaseDiagnosticExample {
                                     }
                                 }
                             } else {
-                                System.out.println("⚠ Table exists but contains no data");
+                                System.out.println("⚠ ElementTypeTable exists but contains no data");
                             }
                         }
                     }

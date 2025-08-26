@@ -1,4 +1,4 @@
-package org.martinmeer;
+package org.martinmeer.utils;
 
 import lombok.Getter;
 import org.slf4j.Logger;

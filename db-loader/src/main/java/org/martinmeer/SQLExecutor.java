@@ -1,5 +1,9 @@
 package org.martinmeer;
 
+import org.martinmeer.repo.ElementTypeTable;
+import org.martinmeer.utils.DatabaseConnection;
+import org.martinmeer.utils.RequestBuilder;
+
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.sql.Statement;
@@ -14,8 +18,8 @@ public class SQLExecutor {
     public static void getInputString(String inputString) {
 
     }
-    public static void execute(List<Table> loadData) throws SQLException {
-        String request = new RequestBuilder().buildRequest(loadData);
+    public static void execute(List<ElementTypeTable> loadData) throws SQLException {
+        String request = new RequestBuilder().buildRequest();
         try (Connection connection = DatabaseConnection.getConnection()) {
             Statement statement = connection.createStatement();
             statement.execute(request);

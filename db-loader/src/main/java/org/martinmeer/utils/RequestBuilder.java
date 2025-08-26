@@ -1,8 +1,6 @@
-package org.martinmeer;
+package org.martinmeer.utils;
 
 import lombok.Getter;
-
-import java.util.List;
 
 @Getter
 public class RequestBuilder {
@@ -11,7 +9,7 @@ public class RequestBuilder {
 
 
 
-    public String buildRequest(List<Table> loadData) {
+    public String buildRequest() {
         return request;
     }
 

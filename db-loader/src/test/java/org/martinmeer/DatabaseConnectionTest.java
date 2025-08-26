@@ -1,6 +1,7 @@
 package org.martinmeer;
 
 import junit.framework.TestCase;
+import org.martinmeer.utils.DatabaseConnection;
 
 import java.lang.reflect.Field;
 import java.sql.Connection;
