@@ -1,7 +1,7 @@
 package org.martinmeer;
 
 import org.martinmeer.repo.Table;
-import org.martinmeer.utils.PlainTxtParser;
+import org.martinmeer.utils.InputData;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -17,16 +17,8 @@ public class DbLoaderMain {
     private static final Logger logger = LoggerFactory.getLogger(DbLoaderMain.class);
 
     public static void main(String[] args) throws SQLException {
-        int payload = 10;
-        File file = new File("");
-        Pattern pattern = Pattern.compile("");
-        List<Table> loadData = PlainTxtParser.parse(file, pattern, payload);
-        try {
-            SQLExecutor.execute(loadData);
-        } catch (SQLException e) {
-            logger.error("Error db interaction {}", e.getMessage());
-        }
-    }
+
+}
 
 
 
