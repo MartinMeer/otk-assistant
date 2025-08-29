@@ -1,10 +1,12 @@
 package org.martinmeer.repo;
 
+import lombok.Getter;
+
 import java.util.Map;
 import java.util.UUID;
 import java.util.regex.Pattern;
 
-
+@Getter
 public class InputData {
 
     private static Pattern pattern;

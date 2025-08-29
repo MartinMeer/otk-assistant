@@ -10,6 +10,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.io.BufferedReader;
+import java.io.BufferedWriter;
 import java.io.File;
 import java.io.IOException;
 import java.io.Reader;
@@ -17,6 +18,7 @@ import java.nio.file.AccessDeniedException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.Map;
+import java.util.UUID;
 import java.util.regex.Pattern;
 
 @Builder
@@ -31,24 +33,47 @@ public class DataProcessor {
     private InputData inputData;
 
 
-
-    private String getInput() throws IOException {
+    private InputData getInputData() throws IOException {
         if (!Files.isReadable(inputFile)) {
             throw new AccessDeniedException("Source is not readable: " + inputFile);
         }
         try (BufferedReader bf = Files.newBufferedReader(inputFile)) {
-            return bf.readLine();
+            while (bf.readLine() != null) {
+                return new InputData(bf.readLine());
+            }
+            ;
         } catch (IOException e) {
             logger.error(e.getMessage());
         }
-        return "";
+        return null;
     }
 
-    private void saveData() {
+    private void saveData(InputData inputData) throws IOException {
 
     }
 
-    public void saveToFile() {
+    public void saveToFile(InputData inputData) throws IOException {
+       Path outputFile = Files.createTempFile("uuid-range-es-ei", ".tmp");
+        try(BufferedWriter bw = Files.newBufferedWriter(outputFile)) {
+            bw.write(generateOutputLine());
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
+    private String generateOutputLine() {
+        UUID uuid = UUID.randomUUID();
+        StringBuilder sb = new StringBuilder();
+        String delimiter = inputData.getDelimiter();
+        Map<String, String> gradeMap = inputData.getGradeMap();
+        return String.valueOf(sb
+                .append(uuid.toString())
+                .append(delimiter)
+                .append(gradeMap.get("es"))
+                .append(delimiter)
+                .append(gradeMap.get("ei")));
+    }
+
+    private String generateRequest() {
 
     }
 
