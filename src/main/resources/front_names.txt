@@ -6,7 +6,7 @@ const response = await postData('/api/process', requestData);
 padeId=ost22
 const page = 'ost22';
     const inputString = `${type}:${size}`;
-    const inputData = { pageId, inputString };
+    const inputDataProcessor = { pageId, inputString };
 
 const type = document.getElementById('detail_type').value.trim(); // Значение из выпадающего списка
 const size = document.getElementById('nominal_dimension').value.trim();

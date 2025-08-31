@@ -1,6 +1,5 @@
 package org.martinmeer;
 
-import org.martinmeer.repo.ElementTypeTable;
 import org.martinmeer.utils.DatabaseConnection;
 import org.martinmeer.utils.RequestBuilder;
 

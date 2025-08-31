@@ -2,10 +2,9 @@ package org.martinmeer;
 
 
 import lombok.Builder;
-import org.martinmeer.repo.InputData;
+import org.martinmeer.repo.InputDataProcessor;
 import org.martinmeer.repo.Table;
-import org.martinmeer.utils.Parser;
-import org.martinmeer.utils.InputData;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -13,7 +12,6 @@ import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.File;
 import java.io.IOException;
-import java.io.Reader;
 import java.nio.file.AccessDeniedException;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -30,16 +28,16 @@ public class DataProcessor {
     private final Pattern pattern;
     private final int payload;
     private Table table;
-    private InputData inputData;
+    private InputDataProcessor inputDataProcessor;
 
 
-    private InputData getInputData() throws IOException {
+    private InputDataProcessor getInputDataProcessor() throws IOException {
         if (!Files.isReadable(inputFile)) {
             throw new AccessDeniedException("Source is not readable: " + inputFile);
         }
         try (BufferedReader bf = Files.newBufferedReader(inputFile)) {
             while (bf.readLine() != null) {
-                return new InputData(bf.readLine());
+                //return new InputDataProcessor(bf.readLine());
             }
             ;
         } catch (IOException e) {
@@ -48,11 +46,11 @@ public class DataProcessor {
         return null;
     }
 
-    private void saveData(InputData inputData) throws IOException {
+    private void saveData(InputDataProcessor inputDataProcessor) throws IOException {
 
     }
 
-    public void saveToFile(InputData inputData) throws IOException {
+    public void saveToFile(InputDataProcessor inputDataProcessor) throws IOException {
        Path outputFile = Files.createTempFile("uuid-range-es-ei", ".tmp");
         try(BufferedWriter bw = Files.newBufferedWriter(outputFile)) {
             bw.write(generateOutputLine());
@@ -61,20 +59,11 @@ public class DataProcessor {
         }
     }
     private String generateOutputLine() {
-        UUID uuid = UUID.randomUUID();
-        StringBuilder sb = new StringBuilder();
-        String delimiter = inputData.getDelimiter();
-        Map<String, String> gradeMap = inputData.getGradeMap();
-        return String.valueOf(sb
-                .append(uuid.toString())
-                .append(delimiter)
-                .append(gradeMap.get("es"))
-                .append(delimiter)
-                .append(gradeMap.get("ei")));
+        return "";
     }
 
     private String generateRequest() {
-
+return "";
     }
 
     public void saveToDb() {

@@ -1,7 +1,6 @@
 package org.martinmeer;
 
-import org.martinmeer.repo.Table;
-import org.martinmeer.utils.InputData;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
