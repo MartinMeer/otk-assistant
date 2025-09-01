@@ -1,0 +1,17 @@
+INSERT INTO esdp.RANGE ("range") VALUES ('(0,3]':: numrange);
+
+
+INSERT INTO esdp.range_tolerance_by_type (rtt_id, el_type, bas_tol_id, range_id ) VALUES (
+'06a1488f-1c7a-4cf8-b518-e090a7e65ef7',
+'hole',
+(SELECT bas_tol_id FROM esdp.basic_tolerance WHERE bas_tol = 'a'),
+(SELECT range_id FROM esdp.range WHERE RANGE = '(0,3]':: numrange)
+);
+
+INSERT INTO esdp.main_reference (rtt_id, dev_code, es, ei) VALUES (
+'06a1488f-1c7a-4cf8-b518-e090a7e65ef7',
+9,
+295,
+270
+);
+

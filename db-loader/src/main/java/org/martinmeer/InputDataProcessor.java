@@ -1,6 +1,9 @@
-package org.martinmeer.repo;
+package org.martinmeer;
 
 import lombok.Getter;
+import org.martinmeer.repo.MainReference;
+import org.martinmeer.repo.Range;
+import org.martinmeer.repo.RangeByToleranceByType;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -19,12 +22,15 @@ public class InputDataProcessor {
     @Getter
     private RangeByToleranceByType rangeByToleranceByType;
     @Getter
+    private Range range;
+    @Getter
     private final List<MainReference> mainReferencesList = new ArrayList<>();
 
     public InputDataProcessor(String inputLine, String elementType) {
         this.inputLine = normalize(inputLine);
         this.elementType = elementType;
         uuid = generateUUID();
+        createRange(generateRange());
         createRangeByToleranceHole();
         createMainReferencesList();
     }
@@ -32,6 +38,11 @@ public class InputDataProcessor {
     private String normalize(String inputLine) {
         return inputLine.replaceAll("\"", "");
     }
+
+    private void createRange(String range) {
+        this.range = new Range(range);
+    }
+
 
     private void createMainReferencesList() {
         List<Map<String, String>> gradeMapsList = generateGradeMapsList();
@@ -49,11 +60,12 @@ public class InputDataProcessor {
 
     //"0-3","A","{""9"":[295,270],""10"":[310,270],""11"":[330,270],""12"":[370,270],""13"":[410,270]}"
     private void createRangeByToleranceHole() {
+
         rangeByToleranceByType = RangeByToleranceByType.builder()
                 .rtt_id(uuid)
                 .bas_tol(generateBasicTolerance())
                 .el_type(elementType)
-                .range(generateRange())
+                .range(range.range())
                 .build();
     }
 
