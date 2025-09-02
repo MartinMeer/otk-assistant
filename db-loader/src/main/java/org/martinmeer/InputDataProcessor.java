@@ -1,13 +1,16 @@
 package org.martinmeer;
 
-import lombok.Getter;
 import org.martinmeer.repo.MainReference;
 import org.martinmeer.repo.Range;
 import org.martinmeer.repo.RangeByToleranceByType;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
+import java.util.HashMap;
+import java.util.UUID;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -19,54 +22,48 @@ public class InputDataProcessor {
     private final String elementType;
     private final UUID uuid;
 
-    @Getter
-    private RangeByToleranceByType rangeByToleranceByType;
-    @Getter
-    private Range range;
-    @Getter
-    private final List<MainReference> mainReferencesList = new ArrayList<>();
-
     public InputDataProcessor(String inputLine, String elementType) {
         this.inputLine = normalize(inputLine);
         this.elementType = elementType;
         uuid = generateUUID();
         createRange(generateRange());
-        createRangeByToleranceHole();
+        createRangeByToleranceByType();
         createMainReferencesList();
     }
 
-    private String normalize(String inputLine) {
-        return inputLine.replaceAll("\"", "");
+    //INPUT EXAMPLE "0-3","A","{""9"":[295,270],""10"":[310,270],""11"":[330,270],""12"":[370,270],""13"":[410,270]}"
+
+    public Range createRange(String range) {
+        return new Range(range);
     }
 
-    private void createRange(String range) {
-        this.range = new Range(range);
-    }
-
-
-    private void createMainReferencesList() {
+    public List<MainReference> createMainReferencesList() {
         List<Map<String, String>> gradeMapsList = generateGradeMapsList();
+        List<MainReference> mainReferencesList = new ArrayList<>();
         for (Map<String, String> gradeMap : gradeMapsList) {
             MainReference mainReference = MainReference.builder()
                     .rtt_id(uuid)
                     .dev_code(Integer.parseInt(gradeMap.get("dev_code")))
-                    .es(gradeMap.get("es"))
-                    .ei(gradeMap.get("ei"))
+                    .es(Integer.parseInt(gradeMap.get("es")))
+                    .ei(Integer.parseInt(gradeMap.get("ei")))
                     .build();
             mainReferencesList.add(mainReference);
         }
+        return mainReferencesList;
     }
 
-
-    //"0-3","A","{""9"":[295,270],""10"":[310,270],""11"":[330,270],""12"":[370,270],""13"":[410,270]}"
-    private void createRangeByToleranceHole() {
-
-        rangeByToleranceByType = RangeByToleranceByType.builder()
+    public RangeByToleranceByType createRangeByToleranceByType() {
+        Range range = createRange(inputLine);
+        return RangeByToleranceByType.builder()
                 .rtt_id(uuid)
                 .bas_tol(generateBasicTolerance())
                 .el_type(elementType)
                 .range(range.range())
                 .build();
+    }
+
+    private String normalize(String inputLine) {
+        return inputLine.replaceAll("\"", "");
     }
 
     private UUID generateUUID() {
@@ -97,12 +94,11 @@ public class InputDataProcessor {
         //throw new IllegalStateException();
         logger.error("BasicTolerance not found{}", basicTolerancePattern);
         return "";
-
     }
 
     //"{""9"":[295,270],""10"":[310,270],""11"":[330,270],""12"":[370,270],""13"":[410,270]}"
     private List<Map<String, String>> generateGradeMapsList() {
-        Pattern valuesPattern = Pattern.compile("(\\d+):\\[(\\d+),(\\d+)]");
+        Pattern valuesPattern = Pattern.compile("(\\d+):\\[(-?\\d+),(-?\\d+)]");
         List<Map<String, String>> gradeMapsList = new ArrayList<>();
         Matcher matcher = valuesPattern.matcher(inputLine);
         try {
@@ -119,7 +115,5 @@ public class InputDataProcessor {
         }
         return new ArrayList<>();
     }
-
-
 }
 
