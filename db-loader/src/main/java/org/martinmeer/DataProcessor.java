@@ -3,6 +3,7 @@ package org.martinmeer;
 
 import lombok.Builder;
 
+import org.martinmeer.repo.Range;
 import org.martinmeer.utils.DatabaseConnection;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -23,23 +24,25 @@ public class DataProcessor {
     private final String elementType;
     //private final int payload;
 
-    private InputDataProcessor prepareData() throws IOException {
+    public void processRange() throws IOException {
         if (!Files.isReadable(inputFile)) {
             throw new AccessDeniedException("Source is not readable: " + inputFile);
         }
         try (BufferedReader bf = Files.newBufferedReader(inputFile)) {
             while (bf.readLine() != null) {
-                return new InputDataProcessor(bf.readLine(), elementType);
+                String inputLine = bf.readLine();
+                InputDataProcessor inputDataProcessor = new InputDataProcessor(inputLine, "");
+                SQLExecutor exec = new SQLExecutor();
+                Range range = inputDataProcessor.createRange();
+                Connection conn = DatabaseConnection.getConnection();
+                exec.saveRange(conn, range);
+
             }
         } catch (IOException e) {
             logger.error(e.getMessage());
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
         }
-        return null;
     }
 
-    public void saveToDb(InputDataProcessor inputDataProcessor) throws SQLException {
-        Connection conn = DatabaseConnection.getConnection();
-
-
-    }
 }

@@ -26,7 +26,12 @@ public class SQLExecutor {
         }
     }
 
-    public void saveRangeByToleranceByType(Connection conn, RangeByToleranceByType rtt) throws SQLException {
+    public void saveRttAndMainReference(Connection conn, RangeByToleranceByType rtt, List<MainReference> mainReferenceList) throws SQLException {
+        saveRangeByToleranceByType(conn, rtt);
+        saveMainReference(conn, mainReferenceList);
+    }
+
+    private void saveRangeByToleranceByType(Connection conn, RangeByToleranceByType rtt) throws SQLException {
         Statement statement = conn.createStatement();
         String request = rangeByToleranceByTypeRequest(rtt);
         int rowCount = statement.executeUpdate(request);
@@ -37,7 +42,7 @@ public class SQLExecutor {
         }
     }
 
-    public void saveMainReference(Connection conn, List<MainReference> mainReferenceList) throws SQLException {
+    private void saveMainReference(Connection conn, List<MainReference> mainReferenceList) throws SQLException {
         String request = "INSERT INTO esdp.main_reference (rtt_id, dev_code, es, ei) VALUES (\n" +
                 "?,\n" +
                 "?,\n" +

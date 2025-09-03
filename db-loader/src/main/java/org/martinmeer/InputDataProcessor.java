@@ -22,19 +22,17 @@ public class InputDataProcessor {
     private final String elementType;
     private final UUID uuid;
 
+
     public InputDataProcessor(String inputLine, String elementType) {
         this.inputLine = normalize(inputLine);
         this.elementType = elementType;
         uuid = generateUUID();
-        createRange(generateRange());
-        createRangeByToleranceByType();
-        createMainReferencesList();
     }
 
     //INPUT EXAMPLE "0-3","A","{""9"":[295,270],""10"":[310,270],""11"":[330,270],""12"":[370,270],""13"":[410,270]}"
 
-    public Range createRange(String range) {
-        return new Range(range);
+    public Range createRange() {
+        return new Range(generateRange());
     }
 
     public List<MainReference> createMainReferencesList() {
@@ -53,7 +51,7 @@ public class InputDataProcessor {
     }
 
     public RangeByToleranceByType createRangeByToleranceByType() {
-        Range range = createRange(inputLine);
+        Range range = createRange();
         return RangeByToleranceByType.builder()
                 .rtt_id(uuid)
                 .bas_tol(generateBasicTolerance())
