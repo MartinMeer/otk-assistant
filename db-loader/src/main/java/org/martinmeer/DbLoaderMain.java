@@ -18,10 +18,18 @@ public class DbLoaderMain {
     private static final Logger logger = LoggerFactory.getLogger(DbLoaderMain.class);
 
     public static void main(String[] args) throws SQLException, IOException {
-        Path inputFile = Path.of("/home/oleg/IdeaProjects/otk-assistant/src/main/resources/db-src/esdp/shaft/shaft-aOK.txt");
-        String elementType = "";
+
+        Path inputFile = Path.of(args[0]).toAbsolutePath();
+        String elementType;
+        switch (args[1]) {
+            case "-h" -> elementType = "hole";
+            case "-s" -> elementType = "shaft";
+            case null -> elementType = "";
+            default -> throw new IllegalStateException("Unexpected value: " + args[1]
+            + "-h for hole, -s for shaft");
+        }
         DataProcessor dataProcessor = new DataProcessor(inputFile, elementType);
-        dataProcessor.processRange();
+        dataProcessor.process();
 
 }
 

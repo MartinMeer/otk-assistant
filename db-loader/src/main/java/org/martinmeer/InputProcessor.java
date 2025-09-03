@@ -15,15 +15,15 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 
-public class InputDataProcessor {
-    Logger logger = LoggerFactory.getLogger(InputDataProcessor.class);
+public class InputProcessor {
+    Logger logger = LoggerFactory.getLogger(InputProcessor.class);
 
     private final String inputLine;
     private final String elementType;
     private final UUID uuid;
 
 
-    public InputDataProcessor(String inputLine, String elementType) {
+    public InputProcessor(String inputLine, String elementType) {
         this.inputLine = normalize(inputLine);
         this.elementType = elementType;
         uuid = generateUUID();
@@ -32,11 +32,11 @@ public class InputDataProcessor {
     //INPUT EXAMPLE "0-3","A","{""9"":[295,270],""10"":[310,270],""11"":[330,270],""12"":[370,270],""13"":[410,270]}"
 
     public Range createRange() {
-        return new Range(generateRange());
+        return new Range(parseRange());
     }
 
     public List<MainReference> createMainReferencesList() {
-        List<Map<String, String>> gradeMapsList = generateGradeMapsList();
+        List<Map<String, String>> gradeMapsList = parseGradeMapsList();
         List<MainReference> mainReferencesList = new ArrayList<>();
         for (Map<String, String> gradeMap : gradeMapsList) {
             MainReference mainReference = MainReference.builder()
@@ -54,7 +54,7 @@ public class InputDataProcessor {
         Range range = createRange();
         return RangeByToleranceByType.builder()
                 .rtt_id(uuid)
-                .bas_tol(generateBasicTolerance())
+                .bas_tol(parseBasicTolerance())
                 .el_type(elementType)
                 .range(range.range())
                 .build();
@@ -68,22 +68,21 @@ public class InputDataProcessor {
         return UUID.randomUUID();
     }
 
-    private String generateRange() {
+    private String parseRange() {
         Pattern rangePattern = Pattern.compile("(\\d+)-(\\d+)");
         Matcher matcher = rangePattern.matcher(inputLine);
         if (matcher.find()) {
-            String range = "(" +
+            return "(" +
                     matcher.group(1) +
                     "," +
                     matcher.group(2) +
                     "]";
-            return range;
         }
         logger.error("Range not found{}", rangePattern);
         return "";
     }
 
-    private String generateBasicTolerance() {
+    private String parseBasicTolerance() {
         Pattern basicTolerancePattern = Pattern.compile("([A-Za-z]+)");
         Matcher matcher = basicTolerancePattern.matcher(inputLine);
         if (matcher.find()) {
@@ -95,7 +94,7 @@ public class InputDataProcessor {
     }
 
     //"{""9"":[295,270],""10"":[310,270],""11"":[330,270],""12"":[370,270],""13"":[410,270]}"
-    private List<Map<String, String>> generateGradeMapsList() {
+    private List<Map<String, String>> parseGradeMapsList() {
         Pattern valuesPattern = Pattern.compile("(\\d+):\\[(-?\\d+),(-?\\d+)]");
         List<Map<String, String>> gradeMapsList = new ArrayList<>();
         Matcher matcher = valuesPattern.matcher(inputLine);

@@ -26,9 +26,9 @@ public class SQLExecutor {
         }
     }
 
-    public void saveRttAndMainReference(Connection conn, RangeByToleranceByType rtt, List<MainReference> mainReferenceList) throws SQLException {
-        saveRangeByToleranceByType(conn, rtt);
-        saveMainReference(conn, mainReferenceList);
+    public void saveRttAndMainReference(Connection conn, InputProcessor inputProcessor) throws SQLException {
+        saveRangeByToleranceByType(conn, inputProcessor.createRangeByToleranceByType());
+        saveMainReference(conn, inputProcessor.createMainReferencesList());
     }
 
     private void saveRangeByToleranceByType(Connection conn, RangeByToleranceByType rtt) throws SQLException {
@@ -62,7 +62,7 @@ public class SQLExecutor {
 
     private String rangeRequest(Range range) {
         String rangeValue = range.range();
-        return "INSERT INTO esdp.RANGE (\"range\") VALUES ('" + rangeValue + "':: numrange) ON CONFLICT (\"range\") DO NOTHING;";
+        return "INSERT INTO esdp.size_range (s_range) VALUES ('" + rangeValue + "':: numrange) ON CONFLICT (s_range) DO NOTHING;";
     }
 
     private String rangeByToleranceByTypeRequest(RangeByToleranceByType rtt) {

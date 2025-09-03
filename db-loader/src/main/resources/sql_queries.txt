@@ -1,4 +1,4 @@
-INSERT INTO esdp.RANGE ("range") VALUES ('(0,3]':: numrange) ON CONFLICT ("range") DO NOTHING;
+INSERT INTO esdp.size_range (s_range) VALUES ('(0,3]':: numrange) ON CONFLICT (s_range) DO NOTHING;
 
 
 INSERT INTO esdp.range_tolerance_by_type (rtt_id, el_type, bas_tol_id, range_id ) VALUES (
