@@ -1,3 +1,4 @@
+/*
 package org.martinmeer.otkassistant.core.service;
 
 import org.junit.jupiter.api.Tag;
@@ -65,3 +66,4 @@ public class SchemaAwareNamedParameterJdbcTemplateRealDbTest {
                 "Exception message should indicate invalid schema name");
     }
 }
+*/

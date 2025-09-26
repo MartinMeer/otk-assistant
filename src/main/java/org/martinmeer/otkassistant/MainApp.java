@@ -16,7 +16,10 @@ public class MainApp extends SpringBootServletInitializer {
     }
 
     public static void main(String[] args) {
-        Dotenv dotenv = Dotenv.load();
+        Dotenv dotenv = Dotenv.configure()
+                .directory("./")          // look in current working dir
+                .load();
+
         dotenv.entries().forEach(entry -> System.setProperty(entry.getKey(), entry.getValue()));
         SpringApplication.run(MainApp.class, args);
     }

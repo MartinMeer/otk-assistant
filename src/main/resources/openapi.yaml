@@ -1,0 +1,118 @@
+openapi: 3.0.4
+info:
+  title: OTK API
+  version: 0.1.0
+  description: Minimal OpenAPI spec for existing calculation endpoints.
+servers:
+  - url: https://api.otk-help.martinmeer.com
+  - url: http://localhost
+tags:
+  - name: OST22 deviations calc
+    description: OST22Calculator endpoints
+  - name: Esdp deviations calc
+    description: esdp endpoints
+
+paths:
+  /ost22:
+    post:
+      operationId: calculateOst22
+      tags:
+        - OST22 deviations calc
+      summary: Calculate OST22 deviations & measuring sizes
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ApiRequest'
+            examples:
+              numericSizeOnly:
+                value:
+                  inputString: "quasi_hole:42.111"
+      responses:
+        '200':
+          description: Successful calculation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Ost22AndEsdpResponse'  
+              examples:
+                sample:
+                  value:
+                    upper_deviance: "0.620"
+                    lower_deviance: "0"
+                    max_mes_value: "42.731"
+                    min_mes_value: "42.111"
+        '400':
+          description: Bad request
+        '500':
+          description: Server error
+  /esdp:
+    post:
+      operationId: calculateEsdp
+      tags:
+        - Esdp deviations calc
+      summary: Calculate ESDP deviations & measuring sizes
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ApiRequest'
+            examples:
+              holeExample:
+                value:
+                  inputString: "42.111H7"
+              shaftExample:
+                value:
+                  inputString: "42.111j6"
+      responses:
+        '200':
+          description: Successful calculation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Ost22AndEsdpResponse'
+              examples:
+                sample:
+                  value:
+                    upper_deviance: "0.011"
+                    lower_deviance: "-0.005"
+                    max_mes_value: "42.116"
+                    min_mes_value: "42.106"
+        '400':
+          description: Bad request
+        '500':
+          description: Server error
+components:
+  schemas:
+    ApiRequest:
+      type: object
+      required:
+        - inputString
+      properties:
+        inputString:
+          type: string
+          description: |
+            Combined input string as expected by the backend parser.
+            For OST22 it is just a decimal size, e.g. "42.111".
+            For ESDP it is size + fundamental + grade, e.g. "10H7" (hole) or "10j6" (shaft).
+      additionalProperties: false
+    Ost22AndEsdpResponse:
+      type: object
+      required:
+        - upper_deviance
+        - lower_deviance
+        - max_mes_value
+        - min_mes_value
+      properties:
+        upper_deviance:
+          type: string
+        lower_deviance:
+          type: string
+        max_mes_value:
+          type: string
+        min_mes_value:
+          type: string
+      additionalProperties: false
+

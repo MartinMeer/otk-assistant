@@ -29,14 +29,14 @@ public class SchemaAwareNamedParameterJdbcTemplate {
     public <T> T queryWithSchema(String sql, Map<String, Object> params, Class<T> clazz) {
 
         String sanitizedSchemaName = sanitizeSchemaName(schemaName);
-        //log.debug("Setting schema to: {}", sanitizedSchemaName); // Логирование выбора схемы
-        //log.debug("Executing SQL: {}", sql); // Логирование SQL-запроса
+        log.debug("Setting schema to: {}", sanitizedSchemaName); // Логирование выбора схемы
+        log.debug("Executing SQL: {}", sql); // Логирование SQL-запроса
         try {
             //log.debug("Parameters: {}", params);
             jdbcTemplate.execute("SET LOCAL search_path TO " + sanitizedSchemaName);
             return namedParameterJdbcTemplate.queryForObject(sql, params, clazz);
         } catch (DataAccessException e) {
-            //log.error("Error executing query in schema {}: {}", sanitizedSchemaName, e.getMessage());
+            log.error("Error executing query in schema {}: {}", sanitizedSchemaName, e.getMessage());
             throw new RuntimeException("Error setting schema or executing query", e);
         } finally {
             jdbcTemplate.execute("RESET search_path");
