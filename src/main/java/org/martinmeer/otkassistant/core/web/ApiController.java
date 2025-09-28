@@ -37,7 +37,7 @@ public class ApiController {
 
         /*JSON from frontend: { "inputString": "typeValue:sizeValue"}*/
         String page = "ost22";
-        String input = request.getInputString();// "exampleType:10.00"
+        String input = request.getInputString(); // "exampleType:10.00"
         log.info("Received request: {}", input);
         MainService mainService = mainServiceFactory.getService(page);
 

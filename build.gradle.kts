@@ -88,9 +88,9 @@ dependencies {
 
 //tasks
 
-/*tasks.war {
-    archiveFileName.set("otkassist.war") // Название WAR-файла
-}*/
+tasks.jar {
+    enabled=false
+}
 
 tasks.test {
     useJUnitPlatform{
