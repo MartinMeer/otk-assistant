@@ -1,3 +1,7 @@
+server:
+  port: ${SERVER_PORT}
+  api:
+
 
 spring:
   datasource:
@@ -18,10 +22,9 @@ management:
 
 logging:
   level:
-    org.martinmeer: DEBUG
+    org.martinmeer: ${LOG_LEVEL_APP}
     org.springframework.jdbc.core.JdbcTemplate: trace
     org.springframework.jdbc.datasource.DataSourceTransactionManager: trace
-    root: info
+    root: ${LOG_LEVEL_ROOT}
     org.springframework.jdbc.core: trace
-server:
-  port: 8080
+

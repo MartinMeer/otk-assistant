@@ -1,0 +1,204 @@
+ Docker Refactoring Plan for OTK-Assistant
+
+  Based on my investigation, here's a comprehensive analysis and refactoring plan for dockerizing your Spring Boot application:
+
+  🔍 Current State Analysis
+
+  Project Structure:
+  • Spring Boot 3.4.1 application with Gradle build system
+  • Main app in src/main/java/org/martinmeer/otkassistant/
+  • Separate db-loader module (to be excluded as requested)
+  • Uses PostgreSQL database
+  • Has existing Dockerfile and compose.yaml but incomplete
+
+  Configuration Files:
+  • application.yml - sets active profile to "docker"
+  • application-docker.yml - uses environment variables for DB config
+  • application-test.yml - hardcoded test DB connection
+  • Legacy config files in misc/ with hardcoded values
+
+
+  🚨 Hardcoded Values Identified
+
+
+  1. **Database Connection (CRITICAL)**
+
+  • Files: .env, src/main/resources/.env, misc/psql_url.yml, misc/db_users.yml, misc/hibernate.cfg.xml, src/main/webapp/META-INF/context.xml, src/test/resources/application-test.yml
+  • Hardcoded Values:
+    • Host: 176.108.248.118
+    • Port: 5432
+    • Database: otk
+    • Username: otkreader
+    • Password: victoria
+
+
+  2. **CORS & API Endpoints (HIGH PRIORITY)**
+
+  • Files: WebConfig.java, ApiController.java, openapi.yaml
+  • Hardcoded Values:
+    • https://otk-help.martinmeer.com
+    • http://localhost:8001
+    • https://api.otk-help.martinmeer.com
+
+
+  3. **Server Configuration**
+
+  • Files: application-docker.yml
+  • Hardcoded Values:
+    • Port: 8080
+
+
+  4. **Docker Configuration Issues**
+
+  • Dockerfile: Incomplete jar execution command (line 11)
+  • compose.yaml: Basic PostgreSQL setup without proper integration
+
+
+  📋 Docker Refactoring Plan
+
+
+  **Phase 1: Environment Configuration**
+
+  1. Create Environment Variable Structure:
+
+
+     1 │   # Database
+     2 │   DATASOURCE_URL
+     3 │   DATASOURCE_USERNAME
+     4 │   DATASOURCE_PASSWORD
+     5 │
+     6 │   # Application
+     7 │   SERVER_PORT
+     8 │   SPRING_PROFILES_ACTIVE
+     9 │
+    10 │   # CORS & API
+    11 │   ALLOWED_ORIGINS
+    12 │   API_BASE_URL
+    13 │
+    14 │   # Logging
+    15 │   LOG_LEVEL_ROOT
+    16 │   LOG_LEVEL_APP
+
+  2. Clean Up Legacy Config Files:
+    • Remove hardcoded values from misc/psql_url.yml, misc/db_users.yml
+    • Update misc/hibernate.cfg.xml to use environment variables
+    • Clean src/main/webapp/META-INF/context.xml
+
+
+  **Phase 2: Application Configuration Updates**
+
+  3. Update Spring Configuration:
+    • Enhance application-docker.yml with all environment variables
+    • Create application-production.yml for production-specific settings
+    • Update CORS configuration in WebConfig.java to use environment variables
+    • Update ApiController.java to use configurable origins
+  4. Update OpenAPI Specification:
+    • Make server URLs configurable via environment variables
+
+
+  **Phase 3: Docker Infrastructure**
+
+  5. Fix Dockerfile:
+    • Correct jar execution command
+    • Add proper multi-stage build
+    • Optimize layer caching
+    • Add health check
+    • Use non-root user for security
+  6. Enhance Docker Compose:
+    • Add application service
+    • Configure proper networking
+    • Add volume mounts for logs
+    • Environment variable management
+    • Health checks and dependencies
+  7. Create Docker Environment Files:
+    • .env.docker - Development Docker environment
+    • .env.production - Production environment template
+    • .env.local - Local development
+
+
+  **Phase 4: Build & Deployment**
+
+  8. Update Build Configuration:
+    • Enhance Makefile with Docker commands
+    • Add Docker build optimization in build.gradle.kts
+    • Create Docker build scripts
+  9. Create Deployment Scripts:
+    • scripts/docker-build.sh
+    • scripts/docker-run.sh
+    • scripts/docker-deploy.sh
+
+
+  **Phase 5: Testing & Documentation**
+
+  10. Update Test Configuration:
+      • Containerize test database
+      • Update application-test.yml to use testcontainers
+      • Add integration tests for Docker deployment
+  11. Documentation:
+      • Update README with Docker instructions
+      • Create Docker deployment guide
+      • Document environment variables
+
+
+  🔧 Specific Configuration Changes Required
+
+
+  **Environment Variables to Extract:**
+
+  1. From `.env` files:
+    • DATASOURCE_URL=jdbc:postgresql://176.108.248.118:5432/otk?ssl=false
+    • DATASOURCE_USERNAME=otkreader
+    • DATASOURCE_PASSWORD=victoria
+  2. From Java files:
+    • CORS origins in WebConfig.java
+    • Cross-origin annotation in ApiController.java
+  3. From OpenAPI spec:
+    • Server URLs
+  4. From config files:
+    • Server port
+    • Logging levels
+    • Database connection settings in legacy files
+
+
+  **Files Requiring Updates:**
+
+  Configuration Files (8 files):
+  • src/main/resources/application-docker.yml
+  • src/main/resources/misc/hibernate.cfg.xml
+  • src/main/webapp/META-INF/context.xml
+  • src/main/resources/openapi.yaml
+  • src/test/resources/application-test.yml
+  • .env (restructure)
+  • src/main/resources/.env (restructure)
+
+  Java Source Files (2 files):
+  • src/main/java/org/martinmeer/otkassistant/core/web/WebConfig.java
+  • src/main/java/org/martinmeer/otkassistant/core/web/ApiController.java
+
+  Docker Files (2 files):
+  • Dockerfile (fix and enhance)
+  • compose.yaml (complete integration)
+
+  Build Files:
+  • Makefile (add Docker commands)
+
+
+  🎯 Priority Order
+
+  1. HIGH PRIORITY: Fix database connection configuration
+  2. HIGH PRIORITY: Fix Dockerfile jar execution
+  3. MEDIUM PRIORITY: CORS and API endpoint configuration
+  4. MEDIUM PRIORITY: Complete Docker Compose setup
+  5. LOW PRIORITY: Legacy config file cleanup
+  6. LOW PRIORITY: Test containerization
+
+
+  ⚠️ Considerations
+
+  • Security: Remove hardcoded credentials completely
+  • Flexibility: Make all environments configurable
+  • Maintainability: Clear separation between dev/test/prod configs
+  • Performance: Optimize Docker image size and startup time
+  • Monitoring: Add proper health checks and logging
+
+  This plan will transform your application into a fully containerized, environment-agnostic system suitable for development, testing, and production deployment.

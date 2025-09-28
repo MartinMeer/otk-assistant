@@ -1,8 +1,8 @@
 spring:
   profiles:
-    active: local
-  datasource:
-    driver-class-name: org.postgresql.Driver
+    active: $(SPRING_PROFILES_ACTIVE)
+  #datasource:
+    #driver-class-name: org.postgresql.Driver
     #jndi-name: java:comp/env/jdbc/otk
 
 
