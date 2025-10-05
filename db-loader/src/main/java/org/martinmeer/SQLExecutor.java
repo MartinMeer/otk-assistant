@@ -31,6 +31,7 @@ public class SQLExecutor {
         saveMainReference(conn, inputProcessor.createMainReferencesList());
     }
 
+
     private void saveRangeByToleranceByType(Connection conn, RangeByToleranceByType rtt) throws SQLException {
         Statement statement = conn.createStatement();
         String request = rangeByToleranceByTypeRequest(rtt);
