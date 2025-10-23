@@ -1,0 +1,298 @@
+ Remote Server Deployment Guide
+
+  Here are the main approaches for deploying your dockerized OTK Assistant to a remote server:
+  ---
+
+  🎯 **Option 1: Direct Docker Compose Deployment (Simplest)**
+
+
+  Prerequisites:
+
+  • A remote Linux server (Ubuntu/Debian/CentOS)
+  • SSH access with sudo privileges
+  • Domain name (optional, for SSL)
+
+
+  Steps:
+
+  1. Prepare Remote Server
+
+     1 │# SSH into your server
+     2 │ssh user@your-server-ip
+     3 │
+     4 │# Install Docker & Docker Compose
+     5 │curl -fsSL https://get.docker.com -o get-docker.sh
+     6 │sudo sh get-docker.sh
+     7 │sudo usermod -aG docker $USER
+     8 │
+     9 │# Install Docker Compose
+    10 │sudo curl -L "https://github.com/docker/compose/releases/latest/download/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
+    11 │sudo chmod +x /usr/local/bin/docker-compose
+    12 │
+    13 │# Logout and login to apply docker group
+    14 │exit
+    15 │ssh user@your-server-ip
+
+  2. Transfer Your Application
+  Option A: Using Git (Recommended)
+
+     1 │# On remote server
+     2 │git clone <your-github-repo-url>
+     3 │cd otk-assistant
+     4 │git checkout dbloader  # or your branch
+
+  Option B: Using rsync
+
+     1 │# From your local machine
+     2 │rsync -avz --exclude 'build' --exclude '.gradle' \
+     3 │  /home/oleg/IdeaProjects/otk-assistant/ \
+     4 │  user@your-server-ip:/opt/otk-assistant/
+
+  Option C: Using SCP
+
+     1 │# From your local machine, create a tarball first
+     2 │cd /home/oleg/IdeaProjects/otk-assistant
+     3 │tar -czf otk-app.tar.gz --exclude='build' --exclude='.gradle' .
+     4 │
+     5 │# Transfer to server
+     6 │scp otk-app.tar.gz user@your-server-ip:/opt/
+     7 │
+     8 │# On server, extract
+     9 │ssh user@your-server-ip
+    10 │cd /opt
+    11 │tar -xzf otk-app.tar.gz -C /opt/otk-assistant
+
+  3. Configure for Production
+
+     1 │# On remote server
+     2 │cd /opt/otk-assistant  # or wherever you deployed
+     3 │
+     4 │# Create production environment file
+     5 │cp .env.prod.example .env.prod
+     6 │
+     7 │# Edit with your settings
+     8 │nano .env.prod
+     9 │# Set:
+    10 │# - Strong POSTGRES_PASSWORD
+    11 │# - Your domain names in ALLOWED_ORIGINS
+    12 │# - API_BASE_URL with your domain
+
+  4. Set Up SSL (for HTTPS)
+  Option A: Let's Encrypt (Free, Recommended)
+
+     1 │# Install Certbot
+     2 │sudo apt update
+     3 │sudo apt install -y certbot
+     4 │
+     5 │# Stop nginx temporarily (if running)
+     6 │docker compose -f docker-compose.prod.yml stop nginx
+     7 │
+     8 │# Get certificate
+     9 │sudo certbot certonly --standalone \
+    10 │  -d yourdomain.com -d www.yourdomain.com
+    11 │
+    12 │# Copy certificates
+    13 │sudo cp /etc/letsencrypt/live/yourdomain.com/fullchain.pem nginx/ssl/cert.pem
+    14 │sudo cp /etc/letsencrypt/live/yourdomain.com/privkey.pem nginx/ssl/key.pem
+    15 │sudo chmod 644 nginx/ssl/cert.pem
+    16 │sudo chmod 600 nginx/ssl/key.pem
+
+  Option B: Use Self-Signed (Testing Only)
+
+     1 │cd scripts
+     2 │./generate-ssl-certs.sh
+
+  5. Deploy Application
+
+     1 │# Build and start
+     2 │docker compose -f docker-compose.prod.yml build
+     3 │docker compose -f docker-compose.prod.yml up -d
+     4 │
+     5 │# Check status
+     6 │docker compose -f docker-compose.prod.yml ps
+     7 │
+     8 │# View logs
+     9 │docker compose -f docker-compose.prod.yml logs -f
+
+  6. Configure Firewall
+
+     1 │# Using UFW (Ubuntu/Debian)
+     2 │sudo ufw allow 22/tcp    # SSH
+     3 │sudo ufw allow 80/tcp    # HTTP
+     4 │sudo ufw allow 443/tcp   # HTTPS
+     5 │sudo ufw enable
+     6 │
+     7 │# Or using firewalld (CentOS/RHEL)
+     8 │sudo firewall-cmd --permanent --add-service=http
+     9 │sudo firewall-cmd --permanent --add-service=https
+    10 │sudo firewall-cmd --reload
+
+  7. Set Up Auto-Start on Reboot
+
+     1 │# Create systemd service
+     2 │sudo nano /etc/systemd/system/otk-assistant.service
+     3 │
+     4 │# Paste this content:
+     5 │[Unit]
+     6 │Description=OTK Assistant Docker Compose
+     7 │Requires=docker.service
+     8 │After=docker.service
+     9 │
+    10 │[Service]
+    11 │Type=oneshot
+    12 │RemainAfterExit=yes
+    13 │WorkingDirectory=/opt/otk-assistant
+    14 │ExecStart=/usr/local/bin/docker-compose -f docker-compose.prod.yml up -d
+    15 │ExecStop=/usr/local/bin/docker-compose -f docker-compose.prod.yml down
+    16 │TimeoutStartSec=0
+    17 │
+    18 │[Install]
+    19 │WantedBy=multi-user.target
+    20 │
+    21 │# Enable and start
+    22 │sudo systemctl enable otk-assistant
+    23 │sudo systemctl start otk-assistant
+
+  ---
+
+  🎯 **Option 2: Cloud Provider Deployment**
+
+
+  **A. AWS (Elastic Beanstalk or EC2)**
+
+  Using EC2:
+  1. Launch Ubuntu EC2 instance (t2.medium or larger)
+  2. Configure Security Groups (ports 22, 80, 443)
+  3. Assign Elastic IP (static IP)
+  4. Follow "Option 1" steps above
+
+  Using Elastic Container Service (ECS):
+  • Push images to ECR (Amazon's Docker registry)
+  • Create ECS task definitions
+  • Deploy using Fargate or EC2 launch type
+  • More complex but auto-scaling
+
+
+  **B. DigitalOcean Droplet**
+
+
+     1 │# Create Droplet (Ubuntu 22.04, 2GB RAM minimum)
+     2 │# SSH in and follow Option 1 steps
+     3 │# DigitalOcean provides easier networking/firewall UI
+
+
+  **C. Linode / Vultr / Hetzner**
+
+  Similar to DigitalOcean - create VPS, follow Option 1
+
+  **D. Azure Container Instances**
+
+  • Push images to Azure Container Registry
+  • Deploy via Azure Portal or CLI
+  • Good for small deployments
+
+  ---
+
+  🎯 **Option 3: Using CI/CD Pipeline (Advanced)**
+
+
+  **GitHub Actions Deployment**
+
+  Create .github/workflows/deploy.yml:
+
+     1 │name: Deploy to Production
+     2 │
+     3 │on:
+     4 │  push:
+     5 │    branches: [ main ]
+     6 │
+     7 │jobs:
+     8 │  deploy:
+     9 │    runs-on: ubuntu-latest
+    10 │    steps:
+    11 │      - uses: actions/checkout@v2
+    12 │
+    13 │      - name: Deploy to server
+    14 │        uses: appleboy/ssh-action@master
+    15 │        with:
+    16 │          host: ${{ secrets.SERVER_HOST }}
+    17 │          username: ${{ secrets.SERVER_USER }}
+    18 │          key: ${{ secrets.SSH_PRIVATE_KEY }}
+    19 │          script: |
+    20 │            cd /opt/otk-assistant
+    21 │            git pull origin main
+    22 │            docker compose -f docker-compose.prod.yml build
+    23 │            docker compose -f docker-compose.prod.yml up -d
+
+  ---
+
+  🎯 **Option 4: Container Orchestration (Production Scale)**
+
+
+  **Kubernetes (K8s)**
+
+  Best for:
+  • Multiple replicas
+  • Auto-scaling
+  • High availability
+  • Multiple environments
+
+  Steps:
+  1. Convert docker-compose to Kubernetes manifests
+  2. Use tools like Kompose or write YAML manually
+  3. Deploy to managed K8s (EKS, GKE, AKS) or self-hosted
+
+
+  **Docker Swarm**
+
+  Simpler than K8s:
+
+     1 │# Initialize swarm
+     2 │docker swarm init
+     3 │
+     4 │# Deploy stack
+     5 │docker stack deploy -c docker-compose.prod.yml otk-stack
+
+  ---
+
+  📋 **Recommended Production Checklist**
+
+  Before deploying:
+  • [ ] Strong database password set
+  • [ ] Domain name pointed to server IP (A record)
+  • [ ] SSL certificates obtained (Let's Encrypt)
+  • [ ] Firewall configured (only 22, 80, 443)
+  • [ ] Backups tested and working
+  • [ ] Monitoring set up (health checks)
+  • [ ] Log rotation configured
+  • [ ] Resources adequate (2GB+ RAM, 2+ CPU cores)
+  • [ ] Update Nginx config with your domain
+  • [ ] Set proper CORS origins
+  • [ ] Test all endpoints work
+
+  ---
+
+  💡 **My Recommendation for You**
+
+  Start with Option 1 (Direct Docker Compose) because:
+  1. ✅ Simple - You already have everything ready
+  2. ✅ Cost-effective - Single VPS (~$5-10/month)
+  3. ✅ Full control - You manage everything
+  4. ✅ No vendor lock-in - Works anywhere
+  5. ✅ Your stack is perfect for it - Already using Compose
+
+  Suggested Providers (easiest to cheapest):
+  1. DigitalOcean - $6/month, excellent docs, easy UI
+  2. Hetzner - $4/month, best price/performance
+  3. Linode - $5/month, good support
+  4. AWS EC2 - More complex, but free tier available
+
+  Typical Timeline:
+  • Server setup: 15 minutes
+  • Application deployment: 10 minutes
+  • SSL setup: 10 minutes
+  • Testing: 15 minutes
+  • Total: ~1 hour for first deployment
+
+  ---
+  Would you like me to create detailed ste
