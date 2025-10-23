@@ -1,0 +1,105 @@
+# Docker Compose file for OTK Assistant
+
+services:
+  # PostgreSQL Database
+  postgres:
+    image: postgres:15-alpine
+    container_name: otk-postgres
+    environment:
+      POSTGRES_DB: otk
+      POSTGRES_USER: otkreader
+      POSTGRES_PASSWORD: victoria
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+      - ./init-db:/docker-entrypoint-initdb.d
+    networks:
+      - otk-network
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U otkreader -d otk"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  # Main Application
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: otk-assistant
+    environment:
+      # Database Configuration
+      DATASOURCE_URL: jdbc:postgresql://postgres:5432/otk?ssl=false
+      DATASOURCE_USERNAME: otkreader
+      DATASOURCE_PASSWORD: victoria
+      
+      # Application Configuration
+      SERVER_PORT: 8080
+      SPRING_PROFILES_ACTIVE: docker
+      
+      # CORS & API Configuration
+      ALLOWED_ORIGINS: http://localhost:3000,http://localhost:8080
+      API_BASE_URL: http://localhost:8080
+      
+      # Logging Configuration
+      LOG_LEVEL_ROOT: INFO
+      LOG_LEVEL_APP: DEBUG
+    ports:
+      - "8080:8080"
+    depends_on:
+      postgres:
+        condition: service_healthy
+    networks:
+      - otk-network
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8080/actuator/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
+
+  # Development with hot reload (optional)
+  app-dev:
+    build:
+      context: .
+      dockerfile: Dockerfile.dev
+    container_name: otk-assistant-dev
+    environment:
+      # Database Configuration
+      DATASOURCE_URL: jdbc:postgresql://postgres:5432/otk?ssl=false
+      DATASOURCE_USERNAME: otkreader
+      DATASOURCE_PASSWORD: victoria
+      
+      # Application Configuration
+      SERVER_PORT: 8080
+      SPRING_PROFILES_ACTIVE: docker
+      
+      # CORS & API Configuration
+      ALLOWED_ORIGINS: http://localhost:3000,http://localhost:8080
+      API_BASE_URL: http://localhost:8080
+      
+      # Logging Configuration
+      LOG_LEVEL_ROOT: INFO
+      LOG_LEVEL_APP: DEBUG
+    ports:
+      - "8080:8080"
+    depends_on:
+      postgres:
+        condition: service_healthy
+    networks:
+      - otk-network
+    volumes:
+      - .:/app
+      - /app/build
+      - /app/.gradle
+    profiles:
+      - dev
+
+volumes:
+  postgres_data:
+
+networks:
+  otk-network:
+    driver: bridge

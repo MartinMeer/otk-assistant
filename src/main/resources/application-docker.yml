@@ -1,13 +1,13 @@
 server:
-  port: ${SERVER_PORT}
+  port: ${SERVER_PORT:8080}
   api:
 
 
 spring:
   datasource:
-    url: ${DATASOURCE_URL}
-    username: ${DATASOURCE_USERNAME}
-    password: ${DATASOURCE_PASSWORD}
+    url: ${DATASOURCE_URL:jdbc:postgresql://localhost:5432/otk?ssl=false}
+    username: ${DATASOURCE_USERNAME:otkreader}
+    password: ${DATASOURCE_PASSWORD:victoria}
     driver-class-name: org.postgresql.Driver
 
 management:
@@ -22,9 +22,9 @@ management:
 
 logging:
   level:
-    org.martinmeer: ${LOG_LEVEL_APP}
+    org.martinmeer: ${LOG_LEVEL_APP:DEBUG}
     org.springframework.jdbc.core.JdbcTemplate: trace
     org.springframework.jdbc.datasource.DataSourceTransactionManager: trace
-    root: ${LOG_LEVEL_ROOT}
+    root: ${LOG_LEVEL_ROOT:INFO}
     org.springframework.jdbc.core: trace
 

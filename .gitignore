@@ -48,3 +48,16 @@ out/
 /db-loader/database.properties
 /db-loader/.env
 /db-loader/src/main/resources/database.properties
+
+# Docker secrets and SSL certificates
+/secrets/*
+!/secrets/README.md
+/nginx/ssl/*.pem
+/nginx/ssl/*.key
+/nginx/ssl/*.crt
+!/nginx/ssl/README.md
+
+# Docker environment files
+.env.prod
+.env.local
+docker-compose.override.yml
